@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layout"
+    tools:context=".Chart">
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/layout_start"
+        android:text="@string/ay"
+        android:textColor="@color/text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lc"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginTop="100dp"
+                android:background="#00000000" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lc1"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginTop="100dp"
+                android:background="#00000000" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lc2"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginTop="100dp"
+                android:background="#00000000" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    //
+    <color name="layout_start">#DCDCDC</color>
+    <color name="layout_end">#DCDCDC</color>
+    <color name="shadow">#29000000</color>
+    <color name="text">#FF707070</color>
+    <color name="line">#A1A1A1</color>
+    <color name="covid">#E47070</color>
+    <color name="death">#672E2E</color>
+    <color name="notsick">#94D677</color>
+</resources>
