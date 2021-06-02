@@ -191,7 +191,7 @@ class Todaynews : AppCompatActivity() {
                         url = element.attr("href").replace(".", "https://news.google.com")
                         Log.d("data", "html:$url")
                     }
-                    in 0..4 -> {
+                    in 0..5 -> {
                         val doc = Jsoup.connect("https://hk.news.yahoo.com/rss").get()
                         //return element.attr("herf");
                         url = doc.select("link")[ram1 + 2].text()
@@ -203,7 +203,7 @@ class Todaynews : AppCompatActivity() {
                         }
                         Log.d("data", "html:$url")
                     }
-                    in 5..9 -> {
+                    in 5..7 -> {
                         val doc = Jsoup.connect("https://www.google.com/search?q=minecraft+-%E8%B5%A4%E8%A3%B8-+-%E6%80%A7%E6%84%9F-&lr=lang_zh-CN%7Clang_zh-TW&safe=active&tbs=lr:lang_1zh-CN%7Clang_1zh-TW,sbd:1,qdr:m&tbm=nws&pws=0").get()
                         val element = doc.select(".dbsr")[ram1]
                         val elements = element.getElementsByTag("a").first()
