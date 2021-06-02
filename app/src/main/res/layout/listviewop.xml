@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/listview"
+    android:elevation="5dp"
+    android:onClick="OnClick"
     android:shadowColor="@color/shadow"
     android:shadowDx="0"
     android:shadowDy="3"
     android:shadowRadius="10"
-    android:elevation="5dp"
-    android:onClick="OnClick"
     tools:context=".Listview">
 
     <TextView
@@ -19,9 +19,9 @@
         android:layout_height="wrap_content"
         android:gravity="top|center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:paddingVertical="4sp"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingVertical="4sp"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:textColor="@color/text"
@@ -29,8 +29,7 @@
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Title"
-        />
+        tools:text="Title" />
 
     <TextView
         android:id="@+id/textView"

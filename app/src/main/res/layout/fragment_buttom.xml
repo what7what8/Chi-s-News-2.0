@@ -34,8 +34,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView18"
-        />
+        app:layout_constraintStart_toEndOf="@+id/textView18" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/half_parent_width"

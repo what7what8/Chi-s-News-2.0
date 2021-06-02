@@ -38,6 +38,7 @@ class Todaynews : AppCompatActivity() {
     private var url = ""
     private var dialog: ProgressDialog? = null
     private var date: Date = Date(System.currentTimeMillis())
+
     @SuppressLint("SimpleDateFormat")
     private var simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     private val db = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference
@@ -100,6 +101,7 @@ class Todaynews : AppCompatActivity() {
                 ref.child("reasonPhrase").setValue(errorResponse?.reasonPhrase.toString())
                 ref.child("error-url").setValue(request?.url.toString())
             }
+
             @RequiresApi(Build.VERSION_CODES.M)
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 super.onReceivedError(view, request, error)
@@ -114,6 +116,7 @@ class Todaynews : AppCompatActivity() {
                 ref.child("error-url").setValue(request?.url.toString())
                 ref.child("url").setValue(webView.url)
             }
+
             //private val log: StringBuilder = StringBuilder()
             @SuppressLint("SimpleDateFormat")
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -133,7 +136,7 @@ class Todaynews : AppCompatActivity() {
                         simpleDateFormat.parse(year + "-" + error[i].split(".")[0])?.toString()?.let { Log.d("data", it) }
                         if (date.before(simpleDateFormat.parse(year + "-" + error[i].split(".")[0]))) {
                             //button?.text = "發生錯誤"
-                                dialog?.dismiss()
+                            dialog?.dismiss()
                             html()
                             dialog?.setOnDismissListener { webView.loadUrl(this@Todaynews.url) }
                         }
@@ -167,7 +170,7 @@ class Todaynews : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun html() {
-        runOnUiThread{
+        runOnUiThread {
             date = Date(System.currentTimeMillis())
             button?.text = "加載中..."
         }
@@ -250,7 +253,7 @@ class Todaynews : AppCompatActivity() {
                 } else dialog?.dismiss()
             } catch (e: Exception) {
                 e.printStackTrace()
-                Thread{
+                Thread {
                     val ref = db.child("today_news-error")
                             .child("url")
                             .child(System.currentTimeMillis().toString())
@@ -263,7 +266,7 @@ class Todaynews : AppCompatActivity() {
                     button?.text = "加載失敗"
                     Toast.makeText(this@Todaynews, "${getString(R.string.ac)}(產生網址)\n${e.cause}", Toast.LENGTH_SHORT).show()
                 }
-                }
+            }
         }.start()
     }
 

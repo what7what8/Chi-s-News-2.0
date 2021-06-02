@@ -178,7 +178,7 @@ $oulo$desc$fdwa${tcif}
         val mnfts: String = if (mnft == "") {
             "沒有記錄"
         } else {
-            "$mnft".replace("從昨晚午夜至上午9時，天文台錄得最低氣溫為","").replace("度。","°C")
+            "$mnft".replace("從昨晚午夜至上午9時，天文台錄得最低氣溫為", "").replace("度。", "°C")
         }
         textView3.text = "來源:香港天文台\n更新時間:$fupt"
         textView.text = """${getString(R.string.一小時平均降雨量)}${rafm}mm

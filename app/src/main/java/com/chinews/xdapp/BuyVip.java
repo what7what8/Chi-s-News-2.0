@@ -331,7 +331,8 @@ public class BuyVip extends AppCompatActivity {
                 break;
             default:
                 textgold.setText(R.string.ab);
-                textgold.setOnClickListener(v -> {});
+                textgold.setOnClickListener(v -> {
+                });
                 break;
         }
     }

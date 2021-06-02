@@ -54,19 +54,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String message = remoteMessage.getNotification().getBody();
         Uri imageUrl = remoteMessage.getNotification().getImageUrl();
         String channel = remoteMessage.getNotification().getChannelId();
-        Log.i(TAG, "onMessageReceived: title : "+title);
-        Log.i(TAG, "onMessageReceived: message : "+message);
-        Log.i(TAG, "onMessageReceived: imageUrl : "+imageUrl);
-        Log.i(TAG,"onMessageReceived: channel : "+channel);
+        Log.i(TAG, "onMessageReceived: title : " + title);
+        Log.i(TAG, "onMessageReceived: message : " + message);
+        Log.i(TAG, "onMessageReceived: imageUrl : " + imageUrl);
+        Log.i(TAG, "onMessageReceived: channel : " + channel);
         if (imageUrl == null) {
-            sendNotification(title,message,channel);
+            sendNotification(title, message, channel);
         } else {
-            sendNotification(title,message,imageUrl,channel);
+            sendNotification(title, message, imageUrl, channel);
         }
     }
+
     private void sendNotification(String title, String message, String channel) {
-        Intent resultIntent = new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channel)
                 .setContentTitle(title)
                 .setContentText(message)
@@ -74,13 +75,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
-                .setColor(Color.argb(255,125,240,210));
+                .setColor(Color.argb(255, 125, 240, 210));
         //设置点击通知之后的响应，启动SettingActivity类
         //通过 builder.build() 拿到 notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         notificationManager.notify(1, mBuilder.build());
-        Log.d(TAG,"done");
+        Log.d(TAG, "done");
     }
+
     private void sendNotification(String title, String message, Uri image, String channel) {
         Bitmap bitmap = null;
         try {
@@ -90,8 +92,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Intent resultIntent = new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channel)
                 .setContentTitle(title)
                 .setContentText(message)
@@ -99,13 +101,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
-                .setColor(Color.argb(255,125,240,210))
+                .setColor(Color.argb(255, 125, 240, 210))
                 .setLargeIcon(bitmap);
         //设置点击通知之后的响应，启动SettingActivity类
         //通过 builder.build() 拿到 notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         notificationManager.notify(1, mBuilder.build());
-        Log.d(TAG,"done");
+        Log.d(TAG, "done");
     }
 
     // [END receive_message]

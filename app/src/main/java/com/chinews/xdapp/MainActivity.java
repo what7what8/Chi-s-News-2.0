@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     //    }
     //}
 
-    private void createNotificationChannel(CharSequence channel_name,String channel_description , String CHANNEL_ID) {
+    private void createNotificationChannel(CharSequence channel_name, String channel_description, String CHANNEL_ID) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -101,12 +101,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logon);
         ImageView imageview = findViewById(R.id.imageView5);
-        createNotificationChannel("應用程式更新通知","用於在程式有可用更新時通知您","update");
-        createNotificationChannel("志報更新通知","用於在志報有更新時通知您","news");
-        createNotificationChannel("其他通知","其他的通知","other");
-        createNotificationChannel("客服聊天通知","用於在需要幫助頁面中，向客服查詢問題或聊天時收到訊息的通知聲","chat");
-        createNotificationChannel("前景服務通知","死人爛鬼系統逼我send通知","foreground");
-        createNotificationChannel("會員消息通知","在開通會員服務後，有新的會員消息時通知","vipmsg");
+        createNotificationChannel("應用程式更新通知", "用於在程式有可用更新時通知您", "update");
+        createNotificationChannel("志報更新通知", "用於在志報有更新時通知您", "news");
+        createNotificationChannel("其他通知", "其他的通知", "other");
+        createNotificationChannel("客服聊天通知", "用於在需要幫助頁面中，向客服查詢問題或聊天時收到訊息的通知聲", "chat");
+        createNotificationChannel("前景服務通知", "死人爛鬼系統逼我send通知", "foreground");
+        createNotificationChannel("會員消息通知", "在開通會員服務後，有新的會員消息時通知", "vipmsg");
         startService(new Intent(getBaseContext(), MessageNotification.class));
         try {
             FileInputStream fileInputStream = openFileInput("cache_text");
@@ -262,7 +262,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             default:
                 textgold.setText(R.string.ab);
-                textgold.setOnClickListener(v -> {});
+                textgold.setOnClickListener(v -> {
+                });
                 break;
         }
     }

@@ -36,16 +36,17 @@ import java.text.SimpleDateFormat
 class Help : AppCompatActivity() {
     private lateinit var usernamev: String
     private var category: String? = "nologin"
-    private var allmessage =""
+    private var allmessage = ""
     var tm = 0
     override fun onBackPressed() {
         super.onBackPressed()
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             startForegroundService(Intent(baseContext, MessageNotification::class.java))
-        }else{
+        } else {
             startService(Intent(baseContext, MessageNotification::class.java))
         }
     }
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,8 +94,9 @@ class Help : AppCompatActivity() {
             }
         }
     }
+
     fun getCategory(): String? {
-        var category : String? = "no login"
+        var category: String? = "no login"
         try {
             val fileInputStream = openFileInput("cache_text")
             val bufferedReader = BufferedReader(InputStreamReader(fileInputStream))
@@ -116,10 +118,11 @@ class Help : AppCompatActivity() {
             fileInputStream.close()
         } catch (e: IOException) {
             e.printStackTrace()
-        }finally {
+        } finally {
             return category
         }
     }
+
     private fun sendNotification(title: String, message: String, channel: String, url: String?) {
         val resultIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -147,6 +150,7 @@ class Help : AppCompatActivity() {
         val notificationManager = NotificationManagerCompat.from(applicationContext)
         notificationManager.notify(1, mBuilder.build())
     }
+
     private val notification = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
@@ -194,11 +198,13 @@ class Help : AppCompatActivity() {
         override fun onCancelled(error: DatabaseError) {
         }
     }
-        @Suppress("DEPRECATION")
-        private val childEventListener = object : ChildEventListener {
+
+    @Suppress("DEPRECATION")
+    private val childEventListener = object : ChildEventListener {
         private var username: String = ""
         private var message: String = ""
         private var category: String = ""
+
         @Suppress("ControlFlowWithEmptyBody")
         @SuppressLint("SimpleDateFormat")
         override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -210,18 +216,20 @@ class Help : AppCompatActivity() {
             Log.d("data", "onChildAdded:$previousChildName")
             val datab = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("message").child(dataSnapshot.key!!)
             datab.child("0").get().addOnSuccessListener {
-                allmessage += when(it.value.toString()){
+                allmessage += when (it.value.toString()) {
                     "null" -> {
                         getString(R.string.username) + " "
                     }
-                    else -> {it.value.toString()+" "}
+                    else -> {
+                        it.value.toString() + " "
+                    }
                 }
                 username = it.value.toString()
                 Log.d("data", "onChildAdded: $username")
-                }
+            }
             datab.child("1").get().addOnSuccessListener { it1 ->
                 allmessage +=
-                        when(it1.value.toString()){
+                        when (it1.value.toString()) {
                             "vip" -> {
                                 "會員 "
                             }
@@ -231,28 +239,31 @@ class Help : AppCompatActivity() {
                             "nologin" -> {
                                 "未登入 "
                             }
-                            else -> {"未登入 "}
+                            else -> {
+                                "未登入 "
+                            }
                         }
                 Log.d("data", "onChildAdded: $category")
             }
             datab.child("2").get().addOnSuccessListener { it2 ->
                 val date = dataSnapshot.key!!
                 val time = SimpleDateFormat("yyyy-MM-dd HH:mm").format(date.toLong())
-                allmessage += time+"\n"
-                allmessage += "訊息: "+it2.value.toString()+"\n\n"
+                allmessage += time + "\n"
+                allmessage += "訊息: " + it2.value.toString() + "\n\n"
                 Log.d("data", "onChildAdded: $message")
                 runOnUiThread {
                     text.text = allmessage
-                    Handler().post{scroll.smoothScrollTo(0, scrollchild.measuredHeight - scroll.height)}
+                    Handler().post { scroll.smoothScrollTo(0, scrollchild.measuredHeight - scroll.height) }
                 }
             }
-            }
+        }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
             try {
                 Log.d("data", "onChildChanged:" + snapshot.key!!)
                 Log.d("data", "onChildChanged:$previousChildName")
-            }catch (e: NotImplementedError){}
+            } catch (e: NotImplementedError) {
+            }
 
         }
 

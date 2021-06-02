@@ -10,7 +10,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
-    lintOptions{
+    lintOptions {
         abortOnError false
     }
 
@@ -30,7 +30,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug{
+        debug {
             ext.enableCrashlytics = false
         }
     }

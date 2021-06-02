@@ -28,6 +28,8 @@ import static java.lang.String.valueOf;
 
 public class CheckJson extends AppCompatActivity {
 
+    public static ArrayList<ArrayList<String>> content;
+    private final ArrayList<ArrayList<String>> content_not_final = new ArrayList<>();
     String catchData;
     String catchWeather;
     String catchWeatherflw;
@@ -53,8 +55,6 @@ public class CheckJson extends AppCompatActivity {
     private String catchSwt;
     private ProgressDialog dialogSwt;
     private StringBuilder desc;
-    private final ArrayList<ArrayList<String>> content_not_final = new ArrayList<>();
-    public static ArrayList<ArrayList<String>> content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +157,7 @@ public class CheckJson extends AppCompatActivity {
                     json.append(line);
                     line = in.readLine();
                 }
-                JSONObject jsonObject = new JSONObject(String.valueOf(json));
+                JSONObject jsonObject = new JSONObject(valueOf(json));
                 JSONObject jsonObject1 = jsonObject.getJSONObject("feed");
                 JSONArray jsonArray = jsonObject1.getJSONArray("entry");
                 ArrayList<String> all_content = new ArrayList<>();
@@ -166,14 +166,18 @@ public class CheckJson extends AppCompatActivity {
                     JSONObject jsonObject3 = jsonObject2.getJSONObject("content");
                     all_content.add(jsonObject3.getString("$t"));
                 }
-
-                for (int i = 0; i < all_content.size(); i+=4) {
-                    ArrayList<String> tmp = new ArrayList<>();
-                    tmp.add(all_content.get(i));
-                    tmp.add(all_content.get(i+1));
-                    tmp.add(all_content.get(i+2));
-                    tmp.add(all_content.get(i+3));
-                    content_not_final.add(tmp);
+                try {
+                    for (int i = 0; i < all_content.size(); i += 4) {
+                        ArrayList<String> tmp = new ArrayList<>();
+                        tmp.add(all_content.get(i));
+                        tmp.add(all_content.get(i + 1));
+                        tmp.add(all_content.get(i + 2));
+                        tmp.add(all_content.get(i + 3));
+                        content_not_final.add(tmp);
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "正在修改中，請稍後查看。", Toast.LENGTH_SHORT).show();
                 }
                 Collections.reverse(content_not_final);
                 content = new ArrayList<>(new LinkedHashSet<>(content_not_final));
@@ -183,8 +187,8 @@ public class CheckJson extends AppCompatActivity {
                 //        System.out.println(ij.get(j));
                 //    }
                 //}
-                startActivity(new Intent(this,Listview.class));
-            }catch(Exception e){
+                startActivity(new Intent(this, Listview.class));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();

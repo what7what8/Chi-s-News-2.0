@@ -106,7 +106,8 @@ public class Bottom extends Fragment {
                     textclock.setGravity(Gravity.CENTER | Gravity.TOP);
                     textView.setVisibility(View.INVISIBLE);
                     TextView textgold = Objects.requireNonNull(getView()).findViewById(R.id.textView18);
-                    textgold.setOnClickListener(v -> {});
+                    textgold.setOnClickListener(v -> {
+                    });
                 }
             }
 
@@ -127,7 +128,8 @@ public class Bottom extends Fragment {
                     textclock.setGravity(Gravity.CENTER | Gravity.BOTTOM);
                     textView.setVisibility(View.INVISIBLE);
                     TextView textgold = Objects.requireNonNull(getView()).findViewById(R.id.textView18);
-                    textgold.setOnClickListener(v -> {});
+                    textgold.setOnClickListener(v -> {
+                    });
                 }
             }
 
@@ -190,7 +192,8 @@ public class Bottom extends Fragment {
                         break;
                     default:
                         textgold.setText(R.string.ab);
-                        textgold.setOnClickListener(v -> {});
+                        textgold.setOnClickListener(v -> {
+                        });
                         break;
                 }
             }

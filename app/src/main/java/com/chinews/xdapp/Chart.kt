@@ -58,16 +58,16 @@ class Chart : AppCompatActivity() {
         load?.setOnDismissListener {
             if (SimpleDateFormat("dd").format(System.currentTimeMillis()).toInt() >= 3) {
                 runOnUiThread {
-                lc2()
-                lc1()
-                lc()
+                    lc2()
+                    lc1()
+                    lc()
                 }
-            }else{
+            } else {
                 runOnUiThread {
-                lc2()
-                lc1()
-                val lineChart = findViewById<LineChart>(R.id.lc)
-                lineChart.visibility = View.GONE
+                    lc2()
+                    lc1()
+                    val lineChart = findViewById<LineChart>(R.id.lc)
+                    lineChart.visibility = View.GONE
                 }
             }
         }
@@ -83,17 +83,17 @@ class Chart : AppCompatActivity() {
             datadaycovid.add(Entry(i.toFloat(), daycovidcopy[i]!!))
         }
         val dataSet = LineDataSet(datadaycovid, getString(R.string.be)) // 图表绑定数据，设置图表折现备注
-        dataSet.color = ContextCompat.getColor(this,R.color.covid) // 设置折线图颜色
+        dataSet.color = ContextCompat.getColor(this, R.color.covid) // 设置折线图颜色
         dataSet.valueTextColor = Color.WHITE // 设置数据值的颜色
         val description = lineChart?.description
         dataSet.setDrawCircles(false)
         description?.textSize = 100F
         description?.text = getString(R.string.bf) // 设置右下角备注
         //color
-        description?.textColor = ContextCompat.getColor(this,R.color.black)
-        lineChart?.xAxis?.textColor = ContextCompat.getColor(this,R.color.black)
-        lineChart?.axisLeft?.textColor = ContextCompat.getColor(this,R.color.black)
-        lineChart?.legend?.textColor = ContextCompat.getColor(this,R.color.black)
+        description?.textColor = ContextCompat.getColor(this, R.color.black)
+        lineChart?.xAxis?.textColor = ContextCompat.getColor(this, R.color.black)
+        lineChart?.axisLeft?.textColor = ContextCompat.getColor(this, R.color.black)
+        lineChart?.legend?.textColor = ContextCompat.getColor(this, R.color.black)
         //
         lineChart?.xAxis?.granularity = 1F
         try {
@@ -124,22 +124,22 @@ class Chart : AppCompatActivity() {
             datadaycovid1.add(Entry(i.toFloat(), daycovidcopy1[i]!!))
         }
         val dataSet1 = LineDataSet(datadaycovid1, getString(R.string.be)) // 图表绑定数据，设置图表折现备注
-        dataSet1.color = ContextCompat.getColor(this,R.color.covid) // 设置折线图颜色
+        dataSet1.color = ContextCompat.getColor(this, R.color.covid) // 设置折线图颜色
         dataSet1.valueTextColor = Color.WHITE // 设置数据值的颜色
         dataSet1.setDrawFilled(true)
-        dataSet1.fillDrawable = ContextCompat.getDrawable(this,R.drawable.covid_line_background)
+        dataSet1.fillDrawable = ContextCompat.getDrawable(this, R.drawable.covid_line_background)
         dataSet1.setDrawCircles(true)
         dataSet1.setDrawCircleHole(true)
-        dataSet1.setCircleColors(ContextCompat.getColor(this,R.color.covid))
+        dataSet1.setCircleColors(ContextCompat.getColor(this, R.color.covid))
         val description = lineChart?.description
         description?.textSize = 100F
         description?.text = getString(R.string.bi) // 设置右下角备注
         val data = LineData(dataSet1)
         //color
-        description?.textColor = ContextCompat.getColor(this,R.color.black)
-        lineChart?.xAxis?.textColor = ContextCompat.getColor(this,R.color.black)
-        lineChart?.axisLeft?.textColor = ContextCompat.getColor(this,R.color.black)
-        lineChart?.legend?.textColor = ContextCompat.getColor(this,R.color.black)
+        description?.textColor = ContextCompat.getColor(this, R.color.black)
+        lineChart?.xAxis?.textColor = ContextCompat.getColor(this, R.color.black)
+        lineChart?.axisLeft?.textColor = ContextCompat.getColor(this, R.color.black)
+        lineChart?.legend?.textColor = ContextCompat.getColor(this, R.color.black)
         //
         lineChart?.xAxis?.granularity = 1F
         lineChart?.data = data
@@ -181,32 +181,32 @@ class Chart : AppCompatActivity() {
         val dataSet = LineDataSet(datadaycovid, getString(R.string.be))
         val dataSet1 = LineDataSet(datadaycovid1, getString(R.string.bl)) // 图表绑定数据，设置图表折现备注
         val dataSet2 = LineDataSet(datadaycovid2, getString(R.string.bj))
-        dataSet.color = ContextCompat.getColor(this,R.color.covid) // 设置折线图颜色
+        dataSet.color = ContextCompat.getColor(this, R.color.covid) // 设置折线图颜色
         dataSet.valueTextColor = Color.WHITE // 设置数据值的颜色
         dataSet.setDrawFilled(true)
-        dataSet.fillDrawable = ContextCompat.getDrawable(this,R.drawable.covid_line_background)
+        dataSet.fillDrawable = ContextCompat.getDrawable(this, R.drawable.covid_line_background)
         dataSet.setDrawCircles(false)
-        dataSet1.color = ContextCompat.getColor(this,R.color.death) // 设置折线图颜色
+        dataSet1.color = ContextCompat.getColor(this, R.color.death) // 设置折线图颜色
         dataSet1.valueTextColor = Color.WHITE // 设置数据值的颜色
         dataSet1.setDrawCircles(false)
         dataSet1.setDrawFilled(true)
-        dataSet1.fillDrawable = ContextCompat.getDrawable(this,R.drawable.death_line_background)
-        dataSet2.color = ContextCompat.getColor(this,R.color.notsick) // 设置折线图颜色
+        dataSet1.fillDrawable = ContextCompat.getDrawable(this, R.drawable.death_line_background)
+        dataSet2.color = ContextCompat.getColor(this, R.color.notsick) // 设置折线图颜色
         dataSet2.valueTextColor = Color.WHITE // 设置数据值的颜色
         dataSet2.setDrawCircles(false)
         dataSet2.setDrawFilled(true)
-        dataSet2.fillDrawable = ContextCompat.getDrawable(this,R.drawable.notsick_line_background)
+        dataSet2.fillDrawable = ContextCompat.getDrawable(this, R.drawable.notsick_line_background)
         val description = lineChart?.description
         description?.textSize = 100F
         description?.text = getString(R.string.bk) // 设置右下角备注
         val data = LineData(dataSet2, dataSet1, dataSet)
         lineChart?.data = data
         //color
-        description?.textColor = ContextCompat.getColor(this,R.color.black)
-        lineChart?.xAxis?.textColor = ContextCompat.getColor(this,R.color.black)
+        description?.textColor = ContextCompat.getColor(this, R.color.black)
+        lineChart?.xAxis?.textColor = ContextCompat.getColor(this, R.color.black)
         lineChart?.xAxis?.granularity = 1F
-        lineChart?.axisLeft?.textColor = ContextCompat.getColor(this,R.color.black)
-        lineChart?.legend?.textColor = ContextCompat.getColor(this,R.color.black)
+        lineChart?.axisLeft?.textColor = ContextCompat.getColor(this, R.color.black)
+        lineChart?.legend?.textColor = ContextCompat.getColor(this, R.color.black)
         //
         try {
             lineChart?.xAxis?.valueFormatter = IAxisValueFormatter { value, _ ->
@@ -253,7 +253,7 @@ class Chart : AppCompatActivity() {
                 // 获取当前时间
                 val date = Date(System.currentTimeMillis())
                 day = simpleDateFormat.format(date).toInt()
-                Log.d("data",((jsonArray.length() - day) + 1).toString())
+                Log.d("data", ((jsonArray.length() - day) + 1).toString())
                 mouth = simpleDateFormat1.format(date).toInt()
                 for (i in 1 until jsonArray.length()) {
                     val coviddatemouth = jsonArray.getJSONObject(i).getString("更新日期").split("/")[1].toInt()
@@ -282,6 +282,7 @@ class Chart : AppCompatActivity() {
             }
         }.start()
     }
+
     private fun insert(arr: Array<Float?>, float: Float): Array<Float?> {
         val size = arr.size //获取数组长度
         val tmp = arrayOfNulls<Float>(size + 1) //新建临时字符串数组，在原来基础上长度加一
