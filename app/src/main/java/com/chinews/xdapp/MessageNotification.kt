@@ -46,8 +46,9 @@ class MessageNotification : Service() {
 
         return super.onStartCommand(intent, flags, startId)
     }
+
     fun getCategory(): String? {
-        var category : String? = "no login"
+        var category: String? = "no login"
         try {
             val fileInputStream = openFileInput("cache_text")
             val bufferedReader = BufferedReader(InputStreamReader(fileInputStream))
@@ -69,15 +70,16 @@ class MessageNotification : Service() {
             fileInputStream.close()
         } catch (e: IOException) {
             e.printStackTrace()
-        }finally {
+        } finally {
             return category
         }
     }
+
     private fun sendNotification(title: String, message: String, channel: String, url: String?, category: Int) {
-        val resultIntent : Intent = when (category) {
+        val resultIntent: Intent = when (category) {
             1 -> Intent(this, Help::class.java)
-            2 -> if (channel == "vipmsg") Intent(this, MainActivity::class.java)
-                 else Intent(this, CheckJson::class.java).putExtra("json",2)
+            2 -> if (channel == "vipmsg") Intent(this, CheckJson::class.java).putExtra("json", 2)
+            else Intent(this, MainActivity::class.java)
             0 -> {
                 if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.O) {
                     Intent()
@@ -91,7 +93,7 @@ class MessageNotification : Service() {
                             .putExtra(Settings.EXTRA_CHANNEL_ID, this.applicationInfo.uid)
                 }
             }
-                else -> Intent(this, MainActivity::class.java)
+            else -> Intent(this, MainActivity::class.java)
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val mBuilder = NotificationCompat.Builder(applicationContext, channel)
