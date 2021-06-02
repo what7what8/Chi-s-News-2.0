@@ -108,6 +108,10 @@ class MessageNotification : Service() {
                 })
                 .setContentIntent(pendingIntent)
                 .setColor(Color.argb(255, 125, 240, 210))
+                .setVibrate(when(category){
+                    1,2 -> longArrayOf(200,50,200,50,300)
+                    else -> longArrayOf(0)
+                })
         if (url != "" && url != null) {
             val bitmap: Bitmap?
             try {
@@ -181,7 +185,8 @@ class MessageNotification : Service() {
             val notificationRef = database.child("notification")
             notificationRef.child("4").get().addOnSuccessListener { audience ->
                 val value = audience.value.toString()
-                can = getCategory()?.let { value.contains(it) } == true
+                can = if (getCategory().equals("cusser")) true
+                      else getCategory()?.let { value.contains(it) } == true
                 Log.d("data", "onChildChanged: ${getCategory()},$can")
                 if (can) {
                     Log.d("data", "onChildChanged: good1")
