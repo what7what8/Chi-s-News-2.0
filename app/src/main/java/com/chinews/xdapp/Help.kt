@@ -167,7 +167,8 @@ class Help : AppCompatActivity() {
             val notificationRef = database.child("notification")
             notificationRef.child("4").get().addOnSuccessListener { audience ->
                 val value = audience.value.toString()
-                can = getCategory()?.let { value.contains(it) } == true
+                can = if (getCategory().equals("cusser")) true
+                else getCategory()?.let { value.contains(it) } == true
                 Log.d("data", "onChildChanged: ${getCategory()},$can")
                 if (can) {
                     Log.d("data", "onChildChanged: good1")
