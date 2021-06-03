@@ -248,8 +248,8 @@ class Chart : AppCompatActivity() {
                 json?.let { Log.d("data", it) }
                 jsonArray = JSONArray(json)
                 @SuppressLint("SimpleDateFormat")
-                val simpleDateFormat = SimpleDateFormat("dd")
-                val simpleDateFormat1 = SimpleDateFormat("MM")
+                val simpleDateFormat = SimpleDateFormat("dd",Locale.CHINA)
+                val simpleDateFormat1 = SimpleDateFormat("MM",Locale.CHINA)
                 // 获取当前时间
                 val date = Date(System.currentTimeMillis())
                 day = simpleDateFormat.format(date).toInt()

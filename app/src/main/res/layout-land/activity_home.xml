@@ -7,6 +7,17 @@
     android:background="@drawable/layout"
     tools:context=".Home">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="111dp"
+        android:layout_marginBottom="68dp"
+        android:contentDescription="@string/TODO"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/logon_gc" />
+
     <fragment
         android:id="@+id/fragment"
         android:name="com.chinews.xdapp.Bottom"

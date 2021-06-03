@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 imageview.setVisibility(View.VISIBLE);
             }
         });
-        //if (Objects.equals(status, "login") && Objects.equals(category, "test")) {
+        //if (Objects.equals(category, "test")) {
         //    textView.setText("感謝幫忙測試志報新聞社，下一次測試期將會在下一個測試版本發放時開啟");
         //    textView1.setVisibility(View.INVISIBLE);
         //    imageview.setVisibility(View.INVISIBLE);
