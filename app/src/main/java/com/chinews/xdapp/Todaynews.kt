@@ -75,6 +75,7 @@ class Todaynews : AppCompatActivity() {
         webSettings.setAppCacheEnabled(false)
         webSettings.domStorageEnabled = true
         webView.webViewClient = object : WebViewClient() {
+            /*
             @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
                 super.onReceivedSslError(view, handler, error)
