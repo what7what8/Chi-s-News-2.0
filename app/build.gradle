@@ -10,7 +10,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
-    lintOptions {
+    lintOptions{
         abortOnError false
     }
 
@@ -18,8 +18,8 @@ android {
         applicationId "com.chinews.xdapp"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 26
-        versionName "2.1 Fo Tan"
+        versionCode 27
+        versionName "2.1 Pre-release"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,7 +30,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
+        debug{
             ext.enableCrashlytics = false
         }
     }
