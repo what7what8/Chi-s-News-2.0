@@ -41,7 +41,7 @@ public class News extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView16);
         textView.setOnClickListener(v -> {
             web = 3;
-            Intent intent = new Intent(News.this, Web.class);
+            Intent intent = new Intent(News.this, OldNews.class);
             intent.putExtra("web", web);
             startActivity(intent);
         });

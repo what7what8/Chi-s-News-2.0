@@ -63,6 +63,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
 }
 repositories {
     mavenCentral()
