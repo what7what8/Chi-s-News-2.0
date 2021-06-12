@@ -61,7 +61,6 @@
     <string name="be">確診</string>
     <string name="bf">歷史每日新增確診</string>
     <string name="bg">點擊過快,加載失敗</string>
-    <string name="bh">確診</string>
     <string name="bi">今月每日新增確診</string>
     <string name="bj">出院</string>
     <string name="bk">歷史每日累計確診死亡出院</string>
@@ -74,4 +73,7 @@
     <string name="濕度">濕度:</string>
     <string name="一小時平均降雨量">一小時平均降雨量:</string>
     <string name="username">匿名</string>
+    <string name="ca">向客服查詢問題…或聊天🤔</string>
+    <string name="bm">似乎正在加載信息或還沒有訊息…</string>
+    <string name="bn">圖表</string>
 </resources>

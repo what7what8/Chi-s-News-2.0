@@ -4,7 +4,6 @@ package com.chinews.xdapp
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
 import android.util.Log

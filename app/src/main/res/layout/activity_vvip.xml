@@ -80,7 +80,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="61dp"
-        android:contentDescription="TODO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
@@ -101,8 +100,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView23"
         app:layout_constraintVertical_bias="0.4" />
 
-    <fragment
-        android:id="@+id/fragment4"
+    <androidx.fragment.app.FragmentContainerView
         android:name="com.chinews.xdapp.Bottom"
         android:layout_width="match_parent"
         android:layout_height="80dp"

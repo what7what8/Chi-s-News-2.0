@@ -107,6 +107,7 @@ public class BuyVip extends AppCompatActivity {
                 int hasCStoragePermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA);
                 if (hasCStoragePermission == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(BuyVip.this, CaptureActivity.class);
+                    //noinspection deprecation
                     startActivityForResult(intent, REQUEST_CODE_SCAN);
                 } else {
                     //没有权限，向用户请求权限
@@ -124,6 +125,7 @@ public class BuyVip extends AppCompatActivity {
                 int hasCStoragePermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA);
                 if (hasCStoragePermission == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(BuyVip.this, CaptureActivity.class);
+                    //noinspection deprecation
                     startActivityForResult(intent, REQUEST_CODE_SCAN);
                 } else {
                     //没有权限，向用户请求权限
@@ -203,10 +205,10 @@ public class BuyVip extends AppCompatActivity {
                 }
                 try {
                     JSONObject jsonObject = new JSONObject(TEXT);
-                    String username = jsonObject.getString("username");
-                    String email = jsonObject.getString("email");
-                    String category = jsonObject.getString("category");
-                    String status = jsonObject.getString("status");
+                    jsonObject.getString("username");
+                    jsonObject.getString("email");
+                    jsonObject.getString("category");
+                    jsonObject.getString("status");
 
                     try {
                         FileOutputStream fileOutputStream = openFileOutput("cache_text", MODE_PRIVATE);
@@ -253,6 +255,16 @@ public class BuyVip extends AppCompatActivity {
                             .create()
                             .show();
                 }
+            } else {
+                int hasCStoragePermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA);
+                if (hasCStoragePermission == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(BuyVip.this, CaptureActivity.class);
+                    //noinspection deprecation
+                    startActivityForResult(intent, REQUEST_CODE_SCAN);
+                } else {
+                    //没有权限，向用户请求权限
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 11);
+                }
             }
         }
         if (requestCode == 11) {
@@ -267,6 +279,16 @@ public class BuyVip extends AppCompatActivity {
                             .setNegativeButton("Cancel", null)
                             .create()
                             .show();
+                }
+            } else {
+                int hasCStoragePermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.READ_EXTERNAL_STORAGE);
+                if (hasCStoragePermission == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(BuyVip.this, CaptureActivity.class);
+                    //noinspection deprecation
+                    startActivityForResult(intent, REQUEST_CODE_SCAN);
+                } else {
+                    //没有权限，向用户请求权限
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
                 }
             }
         }

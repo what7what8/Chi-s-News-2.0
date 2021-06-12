@@ -32,8 +32,11 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -79,18 +82,18 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.ae, Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
         } else {
-            //if (category.equals("test")) {
-            //    try {
-            //        FileOutputStream fileOutputStream = openFileOutput("cache_text", MODE_PRIVATE);
-            //        PrintWriter writer = new PrintWriter(new OutputStreamWriter(fileOutputStream));
-            //        writer.write("logout out now");
-            //        writer.flush();
-            //        writer.close();
-            //        fileOutputStream.close();
-            //    } catch (IOException e) {
-            //        e.printStackTrace();
-            //    }
-            //}
+            if (category.equals("test")) {
+                try {
+                    FileOutputStream fileOutputStream = openFileOutput("cache_text", MODE_PRIVATE);
+                    PrintWriter writer = new PrintWriter(new OutputStreamWriter(fileOutputStream));
+                    writer.write("logout out now");
+                    writer.flush();
+                    writer.close();
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             finishAffinity();
         }
     }
@@ -145,11 +148,11 @@ public class MainActivity extends AppCompatActivity {
                 imageview.setVisibility(View.VISIBLE);
             }
         });
-        //if (Objects.equals(category, "test")) {
-        //    textView.setText("感謝幫忙測試志報新聞社，下一次測試期將會在下一個測試版本發放時開啟");
-        //    textView1.setVisibility(View.INVISIBLE);
-        //    imageview.setVisibility(View.INVISIBLE);
-        //}
+        if (Objects.equals(category, "test")) {
+            textView.setText("感謝幫忙測試志報新聞社，下一次測試期將會在下一個測試版本發放時開啟");
+            textView1.setVisibility(View.INVISIBLE);
+            imageview.setVisibility(View.INVISIBLE);
+        }
         imageview.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CheckJson.class);
             intent.putExtra("json", 3);

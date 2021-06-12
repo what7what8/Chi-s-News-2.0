@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
@@ -23,8 +24,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-
-import java.util.Objects;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -78,11 +77,16 @@ public class Bottom extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle bundle) {
-        super.onActivityCreated(bundle);
-        MobileAds.initialize(Objects.requireNonNull(getContext()), initializationStatus -> {
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        MobileAds.initialize(requireContext(), initializationStatus -> {
         });
-        AdView mAdView = Objects.requireNonNull(getView()).findViewById(R.id.adView);
+        AdView mAdView = requireView().findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         mAdView.setAdListener(new AdListener() {
@@ -91,12 +95,12 @@ public class Bottom extends Fragment {
             public void onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
                 // textclock
-                TextClock textclock = Objects.requireNonNull(getView()).findViewById(R.id.textclock);
+                TextClock textclock = requireView().findViewById(R.id.textclock);
                 assert textclock != null;
                 textclock.setFormat24Hour("yyyy-MM-dd HH:mm:ss");
                 textclock.setFormat12Hour("yyyy-MM-dd hh:mm:ssa");
                 //random text
-                TextView textView = getView().findViewById(R.id.textView18);
+                TextView textView = requireView().findViewById(R.id.textView18);
                 textclock.setGravity(Gravity.TOP | Gravity.END);
                 textView.setGravity(Gravity.TOP | Gravity.START);
                 textView.setVisibility(View.VISIBLE);
@@ -114,11 +118,11 @@ public class Bottom extends Fragment {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                 // Code to be executed when an ad request fails.
-                TextClock textclock = Objects.requireNonNull(getView()).findViewById(R.id.textclock);
+                TextClock textclock = requireView().findViewById(R.id.textclock);
                 textclock.setFormat24Hour("yyyy-MM-dd HH:mm:ss");
                 textclock.setFormat12Hour("yyyy-MM-dd hh:mm:ssa");
                 //random text
-                TextView textView = getView().findViewById(R.id.textView18);
+                TextView textView = requireView().findViewById(R.id.textView18);
                 textclock.setGravity(Gravity.BOTTOM | Gravity.END);
                 textView.setGravity(Gravity.BOTTOM | Gravity.START);
                 textView.setVisibility(View.VISIBLE);
@@ -136,7 +140,7 @@ public class Bottom extends Fragment {
             private void today_gold_text() {
                 int r;
                 r = (int) (Math.random() * 6);
-                TextView textgold = Objects.requireNonNull(getView()).findViewById(R.id.textView18);
+                TextView textgold = requireView().findViewById(R.id.textView18);
                 //sound pool
                 //noinspection deprecation
                 SoundPool sPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 5);

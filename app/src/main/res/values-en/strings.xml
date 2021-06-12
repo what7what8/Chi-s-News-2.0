@@ -58,7 +58,6 @@
     <string name="be">Diagnosis</string>
     <string name="bf">New diagnoses added daily in history</string>
     <string name="bg">Click too fast, load fails</string>
-    <string name="bh">Diagnosis</string>
     <string name="bi">Newly diagnosed daily this month</string>
     <string name="bj">Discharged from hospital</string>
     <string name="bk">Daily accumulation</string>
@@ -71,4 +70,7 @@
     <string name="濕度">Humidity:</string>
     <string name="一小時平均降雨量">One hour average rainfall:</string>
     <string name="username">Unknown</string>
+    <string name="ca">Ask customer service for questions or…chat🤔</string>
+    <string name="bm">It seems that the message is loading or there is no message yet…</string>
+    <string name="bn">Chart</string>
 </resources>

@@ -22,11 +22,11 @@
                 android:id="@+id/w1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="TODO"
                 android:src="@drawable/null_img"
                 app:layout_constraintStart_toStartOf="@+id/textView29"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
                 app:srcCompat="@drawable/null_img"
+                tools:ignore="contentDescription"
                 tools:srcCompat="@drawable/nfrost" />
 
             <ImageView
@@ -34,10 +34,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:contentDescription="TODO"
                 app:layout_constraintStart_toEndOf="@+id/w1"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
                 app:srcCompat="@drawable/null_img"
+                tools:ignore="contentDescription"
                 tools:srcCompat="@drawable/nvhot" />
 
             <ImageView
@@ -45,27 +45,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:contentDescription="TODO"
                 app:layout_constraintStart_toEndOf="@+id/w2"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
-                app:srcCompat="@drawable/null_img" />
+                app:srcCompat="@drawable/null_img"
+                tools:ignore="contentDescription" />
 
             <ImageView
                 android:id="@+id/w4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:contentDescription="TODO"
                 app:layout_constraintStart_toEndOf="@+id/w3"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
-                app:srcCompat="@drawable/null_img" />
+                app:srcCompat="@drawable/null_img"
+                tools:ignore="contentDescription" />
 
             <ImageView
                 android:id="@+id/w5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:contentDescription="TODO"
                 app:layout_constraintStart_toEndOf="@+id/w4"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
                 app:srcCompat="@drawable/null_img"
@@ -76,40 +75,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:contentDescription="TODO"
                 app:layout_constraintStart_toEndOf="@+id/w5"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
-                app:srcCompat="@drawable/null_img" />
+                app:srcCompat="@drawable/null_img"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/w7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:contentDescription="TODO"
                 app:layout_constraintStart_toEndOf="@+id/w6"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
-                app:srcCompat="@drawable/null_img" />
+                app:srcCompat="@drawable/null_img"
+                tools:ignore="contentDescription" />
 
             <ImageView
                 android:id="@+id/w8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:contentDescription="TODO"
                 app:layout_constraintStart_toEndOf="@+id/w7"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
-                app:srcCompat="@drawable/null_img" />
+                app:srcCompat="@drawable/null_img"
+                tools:ignore="contentDescription" />
 
             <ImageView
                 android:id="@+id/w9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:contentDescription="TODO"
                 app:layout_constraintStart_toEndOf="@+id/w8"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
-                app:srcCompat="@drawable/null_img" />
+                app:srcCompat="@drawable/null_img"
+                tools:ignore="contentDescription" />
 
             <ImageView
                 android:id="@+id/imageView20"
@@ -117,12 +116,12 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:contentDescription="TODO"
                 android:scaleType="fitStart"
                 app:layout_constraintBottom_toBottomOf="@+id/textView15"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView15"
                 app:layout_constraintTop_toTopOf="@+id/textView15"
+                tools:ignore="ContentDescription"
                 tools:srcCompat="@drawable/w65" />
 
             <TextView
@@ -131,7 +130,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="start"
-                android:text="TextView"
                 android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -145,7 +143,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="start"
-                android:text="TextView"
                 android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -198,7 +195,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="start"
-                android:text="TextViewaa"
                 android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -248,7 +244,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="TextView"
                 android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -266,7 +261,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="圖表"
+                android:text="@string/bn"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/covid"
                 app:layout_constraintTop_toBottomOf="@+id/covid" />
@@ -278,7 +273,8 @@
                 android:layout_marginStart="-32px"
                 app:layout_constraintStart_toStartOf="@+id/covid"
                 app:layout_constraintTop_toBottomOf="@+id/covid"
-                app:srcCompat="@drawable/newsvip_buttonxml" />
+                app:srcCompat="@drawable/newsvip_buttonxml"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/textView38"

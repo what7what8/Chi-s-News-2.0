@@ -18,7 +18,8 @@
         android:background="@drawable/help_edittext"
         android:ems="10"
         android:gravity="center"
-        android:hint="向客服查詢問題或...聊天🤔"
+        android:hint="@string/ca"
+        android:importantForAutofill="no"
         android:inputType="textLongMessage|textMultiLine|textPersonName|textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,12 +31,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:contentDescription="TODO"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/input"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:srcCompat="@android:drawable/ic_menu_send"
+        tools:ignore="ContentDescription" />
 
     <ScrollView
         android:id="@+id/scroll"
@@ -57,7 +58,7 @@
                 android:id="@+id/textView19"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="似乎正在加載信息或還沒有訊息..."
+                android:text="@string/bm"
                 tools:text="匿名 Vip 2021-4-18 01:09
 \nMessage:This is a message
 \n\nDane Tester 2021-4-18 01:10

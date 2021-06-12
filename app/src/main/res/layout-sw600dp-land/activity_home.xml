@@ -75,8 +75,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <fragment
-        android:id="@+id/fragment5"
+    <androidx.fragment.app.FragmentContainerView
         android:name="com.chinews.xdapp.Bottom"
         android:layout_width="0dp"
         android:layout_height="80dp"

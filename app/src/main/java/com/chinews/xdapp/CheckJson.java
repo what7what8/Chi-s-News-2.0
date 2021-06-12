@@ -166,18 +166,14 @@ public class CheckJson extends AppCompatActivity {
                     JSONObject jsonObject3 = jsonObject2.getJSONObject("content");
                     all_content.add(jsonObject3.getString("$t"));
                 }
-                try {
-                    for (int i = 0; i < all_content.size(); i += 4) {
-                        ArrayList<String> tmp = new ArrayList<>();
-                        tmp.add(all_content.get(i));
-                        tmp.add(all_content.get(i + 1));
-                        tmp.add(all_content.get(i + 2));
-                        tmp.add(all_content.get(i + 3));
-                        content_not_final.add(tmp);
-                    }
-                } catch (IndexOutOfBoundsException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "正在修改中，請稍後查看。", Toast.LENGTH_SHORT).show();
+
+                for (int i = 0; i < all_content.size(); i += 4) {
+                    ArrayList<String> tmp = new ArrayList<>();
+                    tmp.add(all_content.get(i));
+                    tmp.add(all_content.get(i + 1));
+                    tmp.add(all_content.get(i + 2));
+                    tmp.add(all_content.get(i + 3));
+                    content_not_final.add(tmp);
                 }
                 Collections.reverse(content_not_final);
                 content = new ArrayList<>(new LinkedHashSet<>(content_not_final));

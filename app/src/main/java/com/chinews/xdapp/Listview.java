@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Listview extends AppCompatActivity {
-    ArrayList<ArrayList<String>> arrayList = CheckJson.content;
+    final ArrayList<ArrayList<String>> arrayList = CheckJson.content;
     private RecyclerView recycler_view;
 
     @Override
@@ -76,7 +76,7 @@ public class Listview extends AppCompatActivity {
             Intent intent = new Intent(this, CheckJson.class);
             intent.putExtra("json", 1);
             startActivity(intent);
-        }else {
+        } else {
             boolean canc = Objects.equals(arrayList.get(position - 1).get(3), "2");
             if (canc) {
                 Intent intent = new Intent(this, ListviewInfo.class);

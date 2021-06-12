@@ -2,6 +2,7 @@ package com.chinews.xdapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,12 +41,12 @@ public class GoodLogin extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //if (status.equals("login") && category.equals("test")) {
-        //    textView.setText(R.string.ad);
-        //    imageView.setVisibility(View.GONE);
-        //    textView1.setVisibility(View.GONE);
-        //    textView2.setVisibility(View.GONE);
-        //}
+        if (status.equals("login") && category.equals("test")) {
+            textView.setText(R.string.ad);
+            imageView.setVisibility(View.GONE);
+            textView1.setVisibility(View.GONE);
+            textView2.setVisibility(View.GONE);
+        }
         imageView.setOnClickListener(v -> {
             try {
                 FileOutputStream fileOutputStream = openFileOutput("cache_text", MODE_PRIVATE);

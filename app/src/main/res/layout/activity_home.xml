@@ -8,7 +8,6 @@
     tools:context=".Home">
 
     <ImageView
-        android:id="@+id/imageView3"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="-72dp"
@@ -178,8 +177,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <fragment
-        android:id="@+id/fragment2"
+    <androidx.fragment.app.FragmentContainerView
         android:name="com.chinews.xdapp.Bottom"
         android:layout_width="match_parent"
         android:layout_height="80dp"
