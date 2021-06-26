@@ -7,9 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,27 +34,9 @@ public class Bottom extends Fragment {
     //private static final String ARG_PARAM1 = "param1";
     //private static final String ARG_PARAM2 = "param2";
 //
-    //public Bottom() {
-    //    // Required empty public constructor
-    //}
-
-    ///**
-    // * Use this factory method to create a new instance of
-    // * this fragment using the provided parameters.
-    // *
-    // * @param param1 Parameter 1.
-    // * @param param2 Parameter 2.
-    // * @return A new instance of fragment Bottom.
-    // */
-    // TODO: Rename and change types and number of parameters
-    //public static Bottom newInstance(String param1, String param2) {
-    //    Bottom fragment = new Bottom();
-    //    Bundle args = new Bundle();
-    //    args.putString(ARG_PARAM1, param1);
-    //    args.putString(ARG_PARAM2, param2);
-    //    fragment.setArguments(args);
-    //    return fragment;
-    //}
+    public Bottom() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,20 +49,21 @@ public class Bottom extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_buttom, container, false);
-    }
+    //@Override
+    //public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    //                         Bundle savedInstanceState) {
+    //    // Inflate the layout for this fragment
+    //    return inflater.inflate(R.layout.fragment_buttom, container, false);
+    //}
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-    }
+    //@Override
+    //public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+    //    super.onViewStateRestored(savedInstanceState);
+    //}
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        TextView textView = requireView().findViewById(R.id.textView18);
         super.onViewCreated(view, savedInstanceState);
         MobileAds.initialize(requireContext(), initializationStatus -> {
         });
@@ -100,7 +81,7 @@ public class Bottom extends Fragment {
                 textclock.setFormat24Hour("yyyy-MM-dd HH:mm:ss");
                 textclock.setFormat12Hour("yyyy-MM-dd hh:mm:ssa");
                 //random text
-                TextView textView = requireView().findViewById(R.id.textView18);
+
                 textclock.setGravity(Gravity.TOP | Gravity.END);
                 textView.setGravity(Gravity.TOP | Gravity.START);
                 textView.setVisibility(View.VISIBLE);
@@ -109,8 +90,8 @@ public class Bottom extends Fragment {
                 } else {
                     textclock.setGravity(Gravity.CENTER | Gravity.TOP);
                     textView.setVisibility(View.INVISIBLE);
-                    TextView textgold = Objects.requireNonNull(getView()).findViewById(R.id.textView18);
-                    textgold.setOnClickListener(v -> {
+                    TextView textView = requireView().findViewById(R.id.textView18);
+                    textView.setOnClickListener(v -> {
                     });
                 }
             }
@@ -122,7 +103,6 @@ public class Bottom extends Fragment {
                 textclock.setFormat24Hour("yyyy-MM-dd HH:mm:ss");
                 textclock.setFormat12Hour("yyyy-MM-dd hh:mm:ssa");
                 //random text
-                TextView textView = requireView().findViewById(R.id.textView18);
                 textclock.setGravity(Gravity.BOTTOM | Gravity.END);
                 textView.setGravity(Gravity.BOTTOM | Gravity.START);
                 textView.setVisibility(View.VISIBLE);
@@ -131,8 +111,7 @@ public class Bottom extends Fragment {
                 } else {
                     textclock.setGravity(Gravity.CENTER | Gravity.BOTTOM);
                     textView.setVisibility(View.INVISIBLE);
-                    TextView textgold = Objects.requireNonNull(getView()).findViewById(R.id.textView18);
-                    textgold.setOnClickListener(v -> {
+                    textView.setOnClickListener(v -> {
                     });
                 }
             }
@@ -140,7 +119,6 @@ public class Bottom extends Fragment {
             private void today_gold_text() {
                 int r;
                 r = (int) (Math.random() * 6);
-                TextView textgold = requireView().findViewById(R.id.textView18);
                 //sound pool
                 //noinspection deprecation
                 SoundPool sPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 5);
@@ -150,23 +128,23 @@ public class Bottom extends Fragment {
                 int music3 = sPool.load(getContext(), R.raw.d, 1);
                 switch (r) {
                     case 1:
-                        textgold.setText(R.string.s);
-                        textgold.setOnClickListener(v ->
+                        textView.setText(R.string.s);
+                        textView.setOnClickListener(v ->
                                 sPool.play(music1, 1, 1, 0, 0, 1));
                         break;
                     case 2:
-                        textgold.setText(R.string.t);
-                        textgold.setOnClickListener(v ->
+                        textView.setText(R.string.t);
+                        textView.setOnClickListener(v ->
                                 sPool.play(music3, 1, 1, 0, 0, 1));
                         break;
                     case 3:
-                        textgold.setText(R.string.u);
-                        textgold.setOnClickListener(v ->
+                        textView.setText(R.string.u);
+                        textView.setOnClickListener(v ->
                                 sPool.play(music0, 1, 1, 0, 0, 1));
                         break;
                     case 4:
-                        textgold.setText(R.string.v);
-                        textgold.setOnClickListener(v -> {
+                        textView.setText(R.string.v);
+                        textView.setOnClickListener(v -> {
                             Toast.makeText(getContext(), R.string.w, Toast.LENGTH_SHORT).show();
                             new CountDownTimer(4000, 1000) {
 
@@ -190,13 +168,13 @@ public class Bottom extends Fragment {
                         });
                         break;
                     case 5:
-                        textgold.setText(R.string.aa);
-                        textgold.setOnClickListener(v ->
+                        textView.setText(R.string.aa);
+                        textView.setOnClickListener(v ->
                                 sPool.play(music2, 1, 1, 0, 0, 1));
                         break;
                     default:
-                        textgold.setText(R.string.ab);
-                        textgold.setOnClickListener(v -> {
+                        textView.setText(R.string.ab);
+                        textView.setOnClickListener(v -> {
                         });
                         break;
                 }

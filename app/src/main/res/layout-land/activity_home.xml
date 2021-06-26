@@ -18,13 +18,16 @@
         app:srcCompat="@drawable/logon_gc" />
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/f"
         android:name="com.chinews.xdapp.Bottom"
         android:layout_width="0dp"
         android:layout_height="80dp"
+        android:label="fragment_buttom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout="@layout/fragment_buttom" />
+        tools:layout="@layout/fragment_buttom"
+        tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/imageView8"

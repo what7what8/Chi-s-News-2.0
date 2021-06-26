@@ -4,13 +4,11 @@ package com.chinews.xdapp
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.webkit.*
 import android.widget.Button
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -48,7 +46,6 @@ class Todaynews : AppCompatActivity() {
     //private int tm;
     //private String htmlt;
     //@RequiresApi(api = Build.VERSION_CODES.N)
-    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +71,7 @@ class Todaynews : AppCompatActivity() {
         webSettings.setAppCacheEnabled(false)
         webSettings.domStorageEnabled = true
         webView.webViewClient = object : WebViewClient() {
+
             /*
             @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
@@ -116,7 +114,7 @@ class Todaynews : AppCompatActivity() {
                 ref.child("error-url").setValue(request?.url.toString())
                 ref.child("url").setValue(webView.url)
             }
-
+*/
             //private val log: StringBuilder = StringBuilder()
             @SuppressLint("SimpleDateFormat")
             override fun onPageFinished(view: WebView?, url: String?) {
