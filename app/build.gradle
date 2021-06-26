@@ -18,8 +18,8 @@ android {
         applicationId "com.chinews.xdapp"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 28
-        versionName "2.1"
+        versionCode 29
+        versionName "2.1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
