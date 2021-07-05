@@ -76,4 +76,5 @@
     <string name="ca">向客服查詢問題…或聊天🤔</string>
     <string name="bm">似乎正在加載信息或還沒有訊息…</string>
     <string name="bn">圖表</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -177,17 +177,16 @@
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/f"
+    <fragment
+        android:id="@+id/fragment2"
         android:name="com.chinews.xdapp.Bottom"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:label="fragment_buttom"
+        class="com.chinews.xdapp.Bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="80.0dip"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout="@layout/fragment_buttom"
-        tools:ignore="HardcodedText" />
+        tools:ignore="FragmentTagUsage" />
 
     <TextView
         android:id="@+id/textView13"

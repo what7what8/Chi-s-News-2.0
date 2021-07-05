@@ -7,7 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,38 +40,32 @@ public class Bottom extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //if (getArguments() != null) {
-        //  TODO: Rename and change types of parameters
-        // String mParam1 = getArguments().getString(ARG_PARAM1);
-        // String mParam2 = getArguments().getString(ARG_PARAM2);
-        //}
+    public static Bottom newInstance() {
+        return new Bottom();
     }
 
-    @SuppressLint("SetTextI18n")
-    //@Override
-    //public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    //                         Bundle savedInstanceState) {
-    //    // Inflate the layout for this fragment
-    //    return inflater.inflate(R.layout.fragment_buttom, container, false);
-    //}
-
-    //@Override
-    //public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-    //    super.onViewStateRestored(savedInstanceState);
-    //}
-
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        TextView textView = requireView().findViewById(R.id.textView18);
-        super.onViewCreated(view, savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @SuppressLint("InflateParams")
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_buttom, null);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onActivityCreated(Bundle bundle) {
+        super.onActivityCreated(bundle);
         MobileAds.initialize(requireContext(), initializationStatus -> {
         });
         AdView mAdView = requireView().findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        TextView textView = requireView().findViewById(R.id.textView18);
         mAdView.setAdListener(new AdListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
@@ -122,10 +118,10 @@ public class Bottom extends Fragment {
                 //sound pool
                 //noinspection deprecation
                 SoundPool sPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 5);
-                int music0 = sPool.load(getContext(), R.raw.a, 1);
-                int music1 = sPool.load(getContext(), R.raw.b, 1);
-                int music2 = sPool.load(getContext(), R.raw.e, 1);
-                int music3 = sPool.load(getContext(), R.raw.d, 1);
+                int music0 = sPool.load(requireContext(), R.raw.a, 1);
+                int music1 = sPool.load(requireContext(), R.raw.b, 1);
+                int music2 = sPool.load(requireContext(), R.raw.e, 1);
+                int music3 = sPool.load(requireContext(), R.raw.d, 1);
                 switch (r) {
                     case 1:
                         textView.setText(R.string.s);
@@ -145,15 +141,15 @@ public class Bottom extends Fragment {
                     case 4:
                         textView.setText(R.string.v);
                         textView.setOnClickListener(v -> {
-                            Toast.makeText(getContext(), R.string.w, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), R.string.w, Toast.LENGTH_SHORT).show();
                             new CountDownTimer(4000, 1000) {
 
                                 public void onTick(long millisUntilFinished) {
-                                    Toast.makeText(getContext(), getString(R.string.x) + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(requireContext(), getString(R.string.x) + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
                                 }
 
                                 public void onFinish() {
-                                    Toast.makeText(getContext(), R.string.y, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(requireContext(), R.string.y, Toast.LENGTH_SHORT).show();
                                 }
                             }.start();
                             new CountDownTimer(10000, 1000) {
@@ -180,6 +176,18 @@ public class Bottom extends Fragment {
                 }
             }
         });
+    }
+
+    //@Override
+    //public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    //                         Bundle savedInstanceState) {
+    //    // Inflate the layout for this fragment
+    //    return inflater.inflate(R.layout.fragment_buttom, container, false);
+    //}
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
     }
 
 }

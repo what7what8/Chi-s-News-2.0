@@ -99,13 +99,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
+        android:id="@+id/f"
         android:name="com.chinews.xdapp.Bottom"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        class="com.chinews.xdapp.Bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout="@layout/fragment_buttom" />
+        tools:layout="@layout/fragment_buttom"
+        tools:ignore="FragmentTagUsage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
