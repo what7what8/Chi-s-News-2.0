@@ -59,9 +59,13 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.13.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.yuzhiqiang1993:zxing:2.1.4'
-    implementation "androidx.core:core-ktx:1.5.0"
+    implementation "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    //noinspection GradleDependency
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.3'
+    //noinspection GradleDependency
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
 }

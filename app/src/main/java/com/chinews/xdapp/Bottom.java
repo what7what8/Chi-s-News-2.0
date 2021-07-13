@@ -80,9 +80,9 @@ public class Bottom extends Fragment {
     @Override
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
-        MobileAds.initialize(Objects.requireNonNull(getContext()), initializationStatus -> {
+        MobileAds.initialize(requireContext(), initializationStatus -> {
         });
-        AdView mAdView = Objects.requireNonNull(getView()).findViewById(R.id.adView);
+        AdView mAdView = requireView().findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         mAdView.setAdListener(new AdListener() {
@@ -91,7 +91,7 @@ public class Bottom extends Fragment {
             public void onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
                 // textclock
-                TextClock textclock = Objects.requireNonNull(getView()).findViewById(R.id.textclock);
+                TextClock textclock = requireView().findViewById(R.id.textclock);
                 assert textclock != null;
                 textclock.setFormat24Hour("yyyy-MM-dd HH:mm:ss");
                 textclock.setFormat12Hour("yyyy-MM-dd hh:mm:ssa");
@@ -105,7 +105,7 @@ public class Bottom extends Fragment {
                 } else {
                     textclock.setGravity(Gravity.CENTER | Gravity.TOP);
                     textView.setVisibility(View.INVISIBLE);
-                    TextView textgold = Objects.requireNonNull(getView()).findViewById(R.id.textView18);
+                    TextView textgold = requireView().findViewById(R.id.textView18);
                     textgold.setOnClickListener(v -> {
                     });
                 }
@@ -114,7 +114,7 @@ public class Bottom extends Fragment {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                 // Code to be executed when an ad request fails.
-                TextClock textclock = Objects.requireNonNull(getView()).findViewById(R.id.textclock);
+                TextClock textclock = requireView().findViewById(R.id.textclock);
                 textclock.setFormat24Hour("yyyy-MM-dd HH:mm:ss");
                 textclock.setFormat12Hour("yyyy-MM-dd hh:mm:ssa");
                 //random text
@@ -127,7 +127,7 @@ public class Bottom extends Fragment {
                 } else {
                     textclock.setGravity(Gravity.CENTER | Gravity.BOTTOM);
                     textView.setVisibility(View.INVISIBLE);
-                    TextView textgold = Objects.requireNonNull(getView()).findViewById(R.id.textView18);
+                    TextView textgold = requireView().findViewById(R.id.textView18);
                     textgold.setOnClickListener(v -> {
                     });
                 }
@@ -136,7 +136,7 @@ public class Bottom extends Fragment {
             private void today_gold_text() {
                 int r;
                 r = (int) (Math.random() * 6);
-                TextView textgold = Objects.requireNonNull(getView()).findViewById(R.id.textView18);
+                TextView textgold = requireView().findViewById(R.id.textView18);
                 //sound pool
                 //noinspection deprecation
                 SoundPool sPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 5);

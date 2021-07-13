@@ -4,6 +4,8 @@ package com.chinews.xdapp
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
+import android.content.Intent
+import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
@@ -117,7 +119,7 @@ class Todaynews : AppCompatActivity() {
                 ref.child("error-url").setValue(request?.url.toString())
                 ref.child("url").setValue(webView.url)
             }
-
+*/
             //private val log: StringBuilder = StringBuilder()
             @SuppressLint("SimpleDateFormat")
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -147,21 +149,21 @@ class Todaynews : AppCompatActivity() {
                 //Log.d("data",logcat)
                 //Log.d("data", logcat.size.toString())
             }
-            //override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
-            //    if (url == null) return false
-            //    try {
-            //        if (!url.startsWith("https://")&&!url.startsWith("http://")) {
-            //            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            //            startActivity(intent)
-            //            return true
-            //        }
-            //    } catch (e: java.lang.Exception) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
-            //        return true //没有安装该app时，返回true，表示拦截自定义链接，但不跳转，避免弹出上面的错误页面
-            //    }
-            //    //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
-            //    view.loadUrl(url)
-            //    return true
-            //}
+            override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
+                if (url == null) return false
+                try {
+                    if (!url.startsWith("https://")&&!url.startsWith("http://")) {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(intent)
+                        return true
+                    }
+                } catch (e: java.lang.Exception) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
+                    return true //没有安装该app时，返回true，表示拦截自定义链接，但不跳转，避免弹出上面的错误页面
+                }
+                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                view.loadUrl(url)
+                return true
+            }
         }
         MobileAds.initialize(this) {}
         val mAdView = findViewById<AdView>(R.id.adView)

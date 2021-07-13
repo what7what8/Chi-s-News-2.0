@@ -203,10 +203,10 @@ public class BuyVip extends AppCompatActivity {
                 }
                 try {
                     JSONObject jsonObject = new JSONObject(TEXT);
-                    String username = jsonObject.getString("username");
-                    String email = jsonObject.getString("email");
-                    String category = jsonObject.getString("category");
-                    String status = jsonObject.getString("status");
+                    jsonObject.getString("username");
+                    jsonObject.getString("email");
+                    jsonObject.getString("category");
+                    jsonObject.getString("status");
 
                     try {
                         FileOutputStream fileOutputStream = openFileOutput("cache_text", MODE_PRIVATE);
