@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
     <application
@@ -20,6 +19,8 @@
         android:theme="@style/Theme.志報新聞社"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".NewsInfo" />
+        <activity android:name=".LastNews" />
         <activity android:name=".Help" />
         <activity
             android:name=".Splash"
@@ -32,9 +33,9 @@
         </activity>
         <activity android:name=".Chart" />
         <activity android:name=".Warnsum" />
-        <activity android:name=".ListviewInfo" />
+        <activity android:name=".VipRecyclerViewInfo" />
         <activity android:name=".Weather" />
-        <activity android:name=".Listview" />
+        <activity android:name=".VipRecyclerView" />
         <activity android:name=".Login" />
         <activity android:name=".VipArea" />
         <activity android:name=".GoodLogin" />

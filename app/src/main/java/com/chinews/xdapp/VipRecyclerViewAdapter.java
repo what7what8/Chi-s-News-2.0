@@ -12,12 +12,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class VipRecyclerViewAdapter extends RecyclerView.Adapter<VipRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> mTitle;
     private final List<String> mContent;
 
-    Adapter(List<String> data, List<String> content) {
+    VipRecyclerViewAdapter(List<String> data, List<String> content) {
         mTitle = data;
         mContent = content;
     }
@@ -27,7 +27,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // 連結項目布局檔list_item
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.listviewop, parent, false);
+                .inflate(R.layout.viplistopt, parent, false);
         return new ViewHolder(view);
     }
 

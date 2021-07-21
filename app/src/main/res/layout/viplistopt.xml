@@ -11,7 +11,7 @@
     android:shadowDx="0"
     android:shadowDy="3"
     android:shadowRadius="10"
-    tools:context=".Listview"
+    tools:context=".VipRecyclerView"
     tools:ignore="UsingOnClickInXml">
 
     <TextView

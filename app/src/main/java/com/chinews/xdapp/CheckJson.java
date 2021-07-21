@@ -183,7 +183,7 @@ public class CheckJson extends AppCompatActivity {
                 //        System.out.println(ij.get(j));
                 //    }
                 //}
-                startActivity(new Intent(this, Listview.class));
+                startActivity(new Intent(this, VipRecyclerView.class));
             } catch (Exception e) {
                 e.printStackTrace();
             }

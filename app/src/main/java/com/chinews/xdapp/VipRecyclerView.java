@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Listview extends AppCompatActivity {
+public class VipRecyclerView extends AppCompatActivity {
     final ArrayList<ArrayList<String>> arrayList = CheckJson.content;
     private RecyclerView recycler_view;
 
@@ -29,7 +29,7 @@ public class Listview extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listview);
+        setContentView(R.layout.activity_viplist);
         Log.d("data", "onCreate: ");
         //for (int i = 0; i < arrayList.size(); i++) {
         //    ArrayList<String> ij = arrayList.get(i);
@@ -62,7 +62,7 @@ public class Listview extends AppCompatActivity {
         // 設置格線
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         // 將資料交給adapter
-        Adapter adapter = new Adapter(title, content);
+        VipRecyclerViewAdapter adapter = new VipRecyclerViewAdapter(title, content);
         // 設置adapter給recycler_view
         recycler_view.setAdapter(adapter);
         SwipeRefreshLayout refreshLayout = findViewById(R.id.refru);
@@ -79,7 +79,7 @@ public class Listview extends AppCompatActivity {
         } else {
             boolean canc = Objects.equals(arrayList.get(position - 1).get(3), "2");
             if (canc) {
-                Intent intent = new Intent(this, ListviewInfo.class);
+                Intent intent = new Intent(this, VipRecyclerViewInfo.class);
                 intent.putExtra("pos", position - 1);
                 startActivity(intent);
             }
