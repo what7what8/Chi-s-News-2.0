@@ -47,21 +47,21 @@ public class News extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.imageView14);
         imageView.setOnClickListener(v -> {
             web = 3;
-            Intent intent = new Intent(News.this, Web.class);
+            Intent intent = new Intent(News.this, OldNews.class);
             intent.putExtra("web", web);
             startActivity(intent);
         });
         TextView textView = findViewById(R.id.textView16);
         textView.setOnClickListener(v -> {
             web = 3;
-            Intent intent = new Intent(News.this, Web.class);
+            Intent intent = new Intent(News.this, OldNews.class);
             intent.putExtra("web", web);
             startActivity(intent);
         });
         ImageView imageView1 = findViewById(R.id.imageView15);
         imageView1.setOnClickListener(v -> {
             web = 2;
-            Intent intent = new Intent(News.this, Web.class);
+            Intent intent = new Intent(News.this, LastNews.class);
             intent.putExtra("web", web);
             startActivity(intent);
         });
