@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ class OldNews : AppCompatActivity() {
     private lateinit var lastChildRunnable :Runnable
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_last_news)
+        setContentView(R.layout.activity_old_news)
         val news = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("news")
         news.addChildEventListener(childEventListener)
         lastChildRunnable = Runnable {
@@ -32,7 +33,6 @@ class OldNews : AppCompatActivity() {
                 for (i in newsObjArray.indices){
                     do {
                         if (!newsObjArray[i].loading) break
-                        Log.d("data", "forloop")
                     } while (newsObjArray[i].loading)
                 }
                 Log.d("data", "while end")
@@ -44,9 +44,44 @@ class OldNews : AppCompatActivity() {
                     // 將資料交給adapter
                     // 設置adapter給recycler_view
                     recyclerview.adapter = NewsRecyclerViewAdapter(newsObjArray)
+                    findViewById<SearchView>(R.id.searchView).setOnQueryTextListener(onQueryTextListener)
                 }
             }.start()
         }
+    }
+    val onQueryTextListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return try {
+                val searchNewsObjs = arrayListOf<NewsObj>()
+                val recyclerview = findViewById<RecyclerView>(R.id.reclist)
+                newsObjArray.forEach {
+                    if (query?.let { it1 -> it.getSearchKeyWord().contains(it1) } == true){
+                        searchNewsObjs.add(it)
+                    }
+                }
+                recyclerview.adapter = NewsRecyclerViewAdapter(searchNewsObjs)
+                true
+            }catch (e: Exception){
+                false
+            }
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return try {
+                val searchNewsObjs = arrayListOf<NewsObj>()
+                val recyclerview = findViewById<RecyclerView>(R.id.reclist)
+                newsObjArray.forEach {
+                    if (newText?.let { it1 -> it.getSearchKeyWord().contains(it1) } == true){
+                        searchNewsObjs.add(it)
+                    }
+                }
+                recyclerview.adapter = NewsRecyclerViewAdapter(searchNewsObjs)
+                true
+            }catch (e: Exception){
+                false
+            }
+        }
+
     }
     @Suppress("LocalVariableName")
     fun OnClick(v: View) {
@@ -73,12 +108,15 @@ class OldNews : AppCompatActivity() {
     }
     private val childEventListener = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            lastChildHandler.removeCallbacks(lastChildRunnable)
-            lastChildHandler.postDelayed(lastChildRunnable, 20)
-            Log.d("data", "newsaddget")
-            val newsHashMap = snapshot.value as HashMap<*, *>
-            newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(), snapshot.key!!.toLong(), newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString(),this@OldNews).also { it.startToGetBitmaps() })
-            Log.d("data", newsHashMap["cy"]!!.toString())
+            try{
+                lastChildHandler.removeCallbacks(lastChildRunnable)
+                lastChildHandler.postDelayed(lastChildRunnable, 20)
+                Log.d("data", "newsaddget")
+                val newsHashMap = snapshot.value as HashMap<*, *>
+                newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(), snapshot.key!!.toLong(), newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString(),this@OldNews).also { it.startToGetBitmaps() })
+                Log.d("data", newsHashMap["cy"]!!.toString())
+            } catch (e: NullPointerException){}
+
         }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {

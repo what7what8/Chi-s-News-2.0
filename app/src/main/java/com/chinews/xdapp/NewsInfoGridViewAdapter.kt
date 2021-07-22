@@ -1,11 +1,9 @@
 package com.chinews.xdapp
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +11,6 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import java.io.InputStream
-import kotlin.coroutines.coroutineContext
 
 
 class NewsInfoGridViewAdapter(private val context: Context, newsObj: NewsObj) : BaseAdapter() {
@@ -60,7 +56,6 @@ class NewsInfoGridViewAdapter(private val context: Context, newsObj: NewsObj) : 
 
         return v
     }
-
     //动态的ImageView
     private fun getImageView(bm: Bitmap): ImageView {
         val iv = ImageView(context)

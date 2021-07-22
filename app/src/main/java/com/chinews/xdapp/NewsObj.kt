@@ -1,6 +1,5 @@
 package com.chinews.xdapp
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,7 +12,8 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
-import java.io.Serializable
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Suppress("unused")
 data class NewsObj(
@@ -24,6 +24,11 @@ data class NewsObj(
         var content: Context){
     val bitmaps: ArrayList<Bitmap> = arrayListOf()
     var loading = true
+    fun getSearchKeyWord(): String{
+        val returnstr = cy.replace("の","之")+newscode+SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(date)
+        //Log.d("data", "getSearchKeyWord: $returnstr")
+        return returnstr
+    }
     fun startToGetBitmaps() {
         val gsReference = Firebase.storage("gs://chi-s-news.appspot.com").reference.child(id)
         //android.R.drawable.ic_menu_report_image
@@ -33,6 +38,7 @@ data class NewsObj(
                 if (localflie.exists()){
                     bitmaps.add(BitmapFactory.decodeFile(localflie.path, getBitmapOption(2)))
                     loading = false
+                    Log.d("data", "startToGetBitmaps: usefile")
                 }else{
                     it.items[i].getFile(localflie).addOnSuccessListener {
                         bitmaps.add(BitmapFactory.decodeFile(localflie.path, getBitmapOption(2)))
@@ -42,6 +48,7 @@ data class NewsObj(
                         Log.d("data", "why error:${it1.stackTraceToString()}")
                     }.addOnCompleteListener {
                         loading = false
+                        Log.d("data", "startToGetBitmaps: download")
                     }.addOnCanceledListener {
                         loading = false
                     }
