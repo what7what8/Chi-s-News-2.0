@@ -38,6 +38,7 @@ class LastNews : AppCompatActivity() {
                         if (!cyArray.contains(it.cy)) {
                             cyArray.add(it.cy)
                             lastNewsArray.add(it)
+                            it.startToGetBitmaps()
                         }
                         Log.d("data", "forloop")
                     }
@@ -59,7 +60,7 @@ class LastNews : AppCompatActivity() {
             }.start()
             }
         }
-    @Suppress("LocalVariableName")
+    @Suppress("LocalVariableName", "FunctionName")
     fun OnClick(v: View) {
         val recycler_view = findViewById<RecyclerView>(R.id.reclist)
         val position: Int = recycler_view.getChildAdapterPosition(v)
@@ -84,12 +85,14 @@ class LastNews : AppCompatActivity() {
     }
     private val childEventListener = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+            try{
                 lastChildHandler.removeCallbacks(lastChildRunnable)
                 lastChildHandler.postDelayed(lastChildRunnable, 20)
-            Log.d("data", "newsaddget")
-            val newsHashMap = snapshot.value as HashMap<*, *>
-            newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(), snapshot.key!!.toLong(), newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
-            Log.d("data", newsHashMap["cy"]!!.toString())
+                Log.d("data", "newsaddget")
+                val newsHashMap = snapshot.value as HashMap<*, *>
+                newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(), snapshot.key!!.toLong(), newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString(),this@LastNews))
+                Log.d("data", newsHashMap["cy"]!!.toString())
+            } catch (ignored: NullPointerException){}
         }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {

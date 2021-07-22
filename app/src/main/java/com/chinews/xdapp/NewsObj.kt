@@ -1,6 +1,7 @@
 package com.chinews.xdapp
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -19,30 +20,35 @@ data class NewsObj(
         var cy: String,
         var date: Long,
         var id: String,
-        var newscode: String){
-    private val serialVersionUID = -7060210544600464481L
+        var newscode: String,
+        var content: Context){
     val bitmaps: ArrayList<Bitmap> = arrayListOf()
     var loading = true
-    init {
+    fun startToGetBitmaps() {
         val gsReference = Firebase.storage("gs://chi-s-news.appspot.com").reference.child(id)
         //android.R.drawable.ic_menu_report_image
         gsReference.listAll().addOnSuccessListener {
             for (i in 0 until it.items.size) {
-                val localflie = File.createTempFile(it.items[i].name, "webp")
-                it.items[i].getFile(localflie).addOnSuccessListener {
+                val localflie = File(content.cacheDir, "${it.items[i].name}.webp")
+                if (localflie.exists()){
                     bitmaps.add(BitmapFactory.decodeFile(localflie.path, getBitmapOption(2)))
-                    Log.d("data", "just read")
-                }.addOnFailureListener { it1 ->
-                    bitmaps.add(drawableToBitmap(ContextCompat.getDrawable(Activity().applicationContext, android.R.drawable.ic_menu_report_image)!!))
-                    Log.d("data", "why error:${it1.stackTraceToString()}")
-                }.addOnCompleteListener {
                     loading = false
-                }.addOnCanceledListener {
-                    loading = false
+                }else{
+                    it.items[i].getFile(localflie).addOnSuccessListener {
+                        bitmaps.add(BitmapFactory.decodeFile(localflie.path, getBitmapOption(2)))
+                        Log.d("data", "just read")
+                    }.addOnFailureListener { it1 ->
+                        bitmaps.add(drawableToBitmap(ContextCompat.getDrawable(content, android.R.drawable.ic_menu_report_image)!!))
+                        Log.d("data", "why error:${it1.stackTraceToString()}")
+                    }.addOnCompleteListener {
+                        loading = false
+                    }.addOnCanceledListener {
+                        loading = false
+                    }
                 }
             }
         }.addOnFailureListener {
-            bitmaps.add(drawableToBitmap(ContextCompat.getDrawable(Activity().applicationContext, android.R.drawable.ic_menu_report_image)!!))
+            bitmaps.add(drawableToBitmap(ContextCompat.getDrawable(content, android.R.drawable.ic_menu_report_image)!!))
         }
     }
 

@@ -77,7 +77,7 @@ class OldNews : AppCompatActivity() {
             lastChildHandler.postDelayed(lastChildRunnable, 20)
             Log.d("data", "newsaddget")
             val newsHashMap = snapshot.value as HashMap<*, *>
-            newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(), snapshot.key!!.toLong(), newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
+            newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(), snapshot.key!!.toLong(), newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString(),this@OldNews).also { it.startToGetBitmaps() })
             Log.d("data", newsHashMap["cy"]!!.toString())
         }
 
