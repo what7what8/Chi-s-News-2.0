@@ -36,7 +36,7 @@ data class NewsObj(
             for (i in 0 until it.items.size) {
                 val localflie = File(content.cacheDir, "${it.items[i].name}.webp")
                 if (localflie.exists()){
-                    bitmaps.add(BitmapFactory.decodeFile(localflie.path, getBitmapOption(2)))
+                    bitmaps.add(BitmapFactory.decodeFile(localflie.path))
                     loading = false
                     Log.d("data", "startToGetBitmaps: usefile")
                 }else{

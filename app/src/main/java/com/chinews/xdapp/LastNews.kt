@@ -1,5 +1,6 @@
 package com.chinews.xdapp
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -25,6 +26,7 @@ class LastNews : AppCompatActivity() {
     private var reverseNewsObjArray = arrayListOf<NewsObj>()
     private val lastChildHandler: Handler = Handler()
     private lateinit var lastChildRunnable :Runnable
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_last_news)
@@ -34,19 +36,29 @@ class LastNews : AppCompatActivity() {
                     Log.d("data", "thread")
                     reverseNewsObjArray = ArrayList(newsObjArray)
                     reverseNewsObjArray.reverse()
+                    var progress = 0
                     reverseNewsObjArray.forEach {
                         if (!cyArray.contains(it.cy)) {
                             cyArray.add(it.cy)
                             lastNewsArray.add(it)
                             it.startToGetBitmaps()
                         }
-                        Log.d("data", "forloop")
                     }
+                val progressDialog = ProgressDialog(this)
+                progressDialog.progress = 0
+                progressDialog.setTitle("下載並載入圖片")
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+                progressDialog.max = lastNewsArray.size
+                progressDialog.show()
                 Thread{
                     for (i in lastNewsArray.indices){
                         do {
                             if (!lastNewsArray[i].loading) break
                         } while (lastNewsArray[i].loading)
+                        runOnUiThread {
+                            progress++
+                            progressDialog.progress = progress
+                        }
                     }
                 runOnUiThread {
                     val recyclerview = findViewById<RecyclerView>(R.id.reclist)
@@ -56,6 +68,7 @@ class LastNews : AppCompatActivity() {
                     // 將資料交給adapter
                     // 設置adapter給recycler_view
                     recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray)
+                    progressDialog.cancel()
                 }
             }.start()
             }
@@ -80,6 +93,7 @@ class LastNews : AppCompatActivity() {
         }
          */
         val intent = Intent(this, NewsInfo::class.java)
+        intent.putExtra("newsclass",0)
         getLastNewsObj = lastNewsArray[position]
         startActivity(intent)
     }
@@ -90,7 +104,13 @@ class LastNews : AppCompatActivity() {
                 lastChildHandler.postDelayed(lastChildRunnable, 20)
                 Log.d("data", "newsaddget")
                 val newsHashMap = snapshot.value as HashMap<*, *>
-                newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(), snapshot.key!!.toLong(), newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString(),this@LastNews))
+                newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(),
+                        if (snapshot.key!!.lastIndexOf("|") == -1){
+                            snapshot.key!!.toLong()
+                        }else {
+                            snapshot.key!!.substring(0 until snapshot.key!!.lastIndexOf("|")).toLong()
+                        }
+                        , newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString(),this@LastNews))
                 Log.d("data", newsHashMap["cy"]!!.toString())
             } catch (ignored: NullPointerException){}
         }

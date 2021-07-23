@@ -157,36 +157,24 @@ class Help : AppCompatActivity() {
         }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            var content: String
-            var channel: String
-            var title: String
-            var url: String
-            var can: Boolean
+            val content: String
+            val channel: String
+            val title: String
+            val url: String
+            val can: Boolean
             Log.d("data", "onChildChanged: good")
-            val database = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference
-            val notificationRef = database.child("notification")
-            notificationRef.child("4").get().addOnSuccessListener { audience ->
-                val value = audience.value.toString()
+            val hashMap = snapshot.value as HashMap<*,*>
                 can = if (getCategory().equals("cusser")) true
-                else getCategory()?.let { value.contains(it) } == true
+                      else getCategory()?.let { hashMap[4].toString().contains(it) } == true
                 Log.d("data", "onChildChanged: ${getCategory()},$can")
                 if (can) {
                     Log.d("data", "onChildChanged: good1")
-                    notificationRef.child("0").get().addOnSuccessListener {
-                        channel = it.value.toString()
-                        notificationRef.child("1").get().addOnSuccessListener { it1 ->
-                            title = it1.value.toString()
-                            notificationRef.child("2").get().addOnSuccessListener { it2 ->
-                                content = it2.value.toString()
-                                notificationRef.child("3").get().addOnSuccessListener { it3 ->
-                                    url = it3.value.toString()
-                                    sendNotification(title, content, channel, url)
-                                    Log.d("data", "$title,$content,$channel,$url")
-                                }
-                            }
-                        }
-                    }
-                }
+                    channel = hashMap[0].toString()
+                    title = hashMap[1].toString()
+                    content = hashMap[2].toString()
+                    url = hashMap[3].toString()
+                    sendNotification(title, content, channel, url)
+                    Log.d("data", "$title,$content,$channel,$url")
             }
         }
 
@@ -202,10 +190,6 @@ class Help : AppCompatActivity() {
 
     @Suppress("DEPRECATION")
     private val childEventListener = object : ChildEventListener {
-        private var username: String = ""
-        private var message: String = ""
-        private var category: String = ""
-
         @Suppress("ControlFlowWithEmptyBody")
         @SuppressLint("SimpleDateFormat")
         override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -213,24 +197,19 @@ class Help : AppCompatActivity() {
             val scroll = findViewById<ScrollView>(R.id.scroll)
             val scrollchild = findViewById<ConstraintLayout>(R.id.scrollchild)
             tm += 1
-            Log.d("data", "onChildAdded:" + dataSnapshot.key!!)
-            Log.d("data", "onChildAdded:$previousChildName")
-            val datab = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("message").child(dataSnapshot.key!!)
-            datab.child("0").get().addOnSuccessListener {
-                allmessage += when (it.value.toString()) {
+            //Log.d("data", "onChildAdded:" + dataSnapshot.key!!)
+            //Log.d("data", "onChildAdded:$previousChildName")
+            val hashMap = dataSnapshot.value as ArrayList<*>
+                allmessage += when (hashMap[0].toString()) {
                     "null" -> {
                         getString(R.string.username) + " "
                     }
                     else -> {
-                        it.value.toString() + " "
+                        hashMap[0].toString() + " "
                     }
                 }
-                username = it.value.toString()
-                Log.d("data", "onChildAdded: $username")
-            }
-            datab.child("1").get().addOnSuccessListener { it1 ->
                 allmessage +=
-                        when (it1.value.toString()) {
+                        when (hashMap[1].toString()) {
                             "vip" -> {
                                 "會員 "
                             }
@@ -244,19 +223,14 @@ class Help : AppCompatActivity() {
                                 "未登入 "
                             }
                         }
+                category = hashMap[1].toString()
                 Log.d("data", "onChildAdded: $category")
-            }
-            datab.child("2").get().addOnSuccessListener { it2 ->
                 val date = dataSnapshot.key!!
                 val time = SimpleDateFormat("yyyy-MM-dd HH:mm").format(date.toLong())
                 allmessage += time + "\n"
-                allmessage += "訊息: " + it2.value.toString() + "\n\n"
-                Log.d("data", "onChildAdded: $message")
-                runOnUiThread {
-                    text.text = allmessage
-                    Handler().post { scroll.smoothScrollTo(0, scrollchild.measuredHeight - scroll.height) }
-                }
-            }
+                allmessage += "訊息: " + hashMap[2].toString() + "\n\n"
+                text.text = allmessage
+                Handler().post { scroll.smoothScrollTo(0, scrollchild.measuredHeight - scroll.height) }
         }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {

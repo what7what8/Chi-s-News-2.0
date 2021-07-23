@@ -41,9 +41,10 @@ class MessageNotification : Service() {
         val database = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference
         val ref = database.child("message")
         val notificationRef = database.child("notification")
+        val newsRef = database.child("news")
         notificationRef.addChildEventListener(notification)
         ref.addChildEventListener(childEventListener)
-
+        newsRef.addChildEventListener(newsChildEventListener)
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -80,6 +81,7 @@ class MessageNotification : Service() {
             1 -> Intent(this, Help::class.java)
             2 -> if (channel == "vipmsg") Intent(this, CheckJson::class.java).putExtra("json", 2)
             else Intent(this, MainActivity::class.java)
+            3 -> Intent(this, LastNews::class.java)
             0 -> {
                 if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.O) {
                     Intent()
@@ -109,7 +111,7 @@ class MessageNotification : Service() {
                 .setContentIntent(pendingIntent)
                 .setColor(Color.argb(255, 125, 240, 210))
                 .setVibrate(when (category) {
-                    1, 2 -> longArrayOf(200, 50, 200, 50, 300)
+                    1, 2, 3 -> longArrayOf(200, 50, 200, 50, 300)
                     else -> longArrayOf(0)
                 })
         if (url != "" && url != null) {
@@ -129,7 +131,32 @@ class MessageNotification : Service() {
         notificationManager.notify(1, mBuilder.build())
         if (category == 0) startForeground(1, mBuilder.build())
     }
+    private val newsChildEventListener = object : ChildEventListener {
+        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+            if ((System.currentTimeMillis() - time) > 10000) {
+                val hashMap = snapshot.value as HashMap<*,*>
+                val cy = hashMap["cy"].toString()
+                val title = "新的${cy}出爐了！！😆"
+                val message = "快入去App查看新的${cy}吧！！😁😏"
+                sendNotification(title,message,"news",null,3)
+            } else {
+                time = System.currentTimeMillis()
+            }
+        }
 
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+        }
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+
+        }
+    }
     private val childEventListener = object : ChildEventListener {
         private var username: String = ""
 
@@ -137,21 +164,17 @@ class MessageNotification : Service() {
         @SuppressLint("SimpleDateFormat")
         override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
             if ((System.currentTimeMillis() - time) > 10000) {
-                val datab = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("message").child(dataSnapshot.key!!)
-                datab.child("0").get().addOnSuccessListener {
-                    username = when (it.value.toString()) {
+                val hashMap = dataSnapshot.value as HashMap<*,*>
+                    username = when (hashMap[0].toString()) {
                         "null" -> {
                             getString(R.string.username) + " "
                         }
                         else -> {
-                            it.value.toString() + " "
+                            hashMap[0].toString() + " "
                         }
                     }
-                }
-                datab.child("2").get().addOnSuccessListener { it2 ->
-                    sendNotification("你收到一條訊息", "${username}說: ${it2.value.toString()}", "chat", null, 1)
+                    sendNotification("你收到一條訊息", "${username}說: ${hashMap[2].toString()}", "chat", null, 1)
                     time = System.currentTimeMillis()
-                }
             } else {
                 time = System.currentTimeMillis()
             }
@@ -175,36 +198,24 @@ class MessageNotification : Service() {
         }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            var content: String
-            var channel: String
-            var title: String
-            var url: String
-            var can: Boolean
+            val content: String
+            val channel: String
+            val title: String
+            val url: String
+            val can: Boolean
             Log.d("data", "onChildChanged: good")
-            val database = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference
-            val notificationRef = database.child("notification")
-            notificationRef.child("4").get().addOnSuccessListener { audience ->
-                val value = audience.value.toString()
-                can = if (getCategory().equals("cusser")) true
-                else getCategory()?.let { value.contains(it) } == true
-                Log.d("data", "onChildChanged: ${getCategory()},$can")
-                if (can) {
-                    Log.d("data", "onChildChanged: good1")
-                    notificationRef.child("0").get().addOnSuccessListener {
-                        channel = it.value.toString()
-                        notificationRef.child("1").get().addOnSuccessListener { it1 ->
-                            title = it1.value.toString()
-                            notificationRef.child("2").get().addOnSuccessListener { it2 ->
-                                content = it2.value.toString()
-                                notificationRef.child("3").get().addOnSuccessListener { it3 ->
-                                    url = it3.value.toString()
-                                    sendNotification(title, content, channel, url, 2)
-                                    Log.d("data", "$title,$content,$channel,$url")
-                                }
-                            }
-                        }
-                    }
-                }
+            val hashMap = snapshot.value as HashMap<*,*>
+            can = if (getCategory().equals("cusser")) true
+            else getCategory()?.let { hashMap[4].toString().contains(it) } == true
+            Log.d("data", "onChildChanged: ${getCategory()},$can")
+            if (can) {
+                Log.d("data", "onChildChanged: good1")
+                channel = hashMap[0].toString()
+                title = hashMap[1].toString()
+                content = hashMap[2].toString()
+                url = hashMap[3].toString()
+                sendNotification(title, content, channel, url, 2)
+                Log.d("data", "$title,$content,$channel,$url")
             }
         }
 
