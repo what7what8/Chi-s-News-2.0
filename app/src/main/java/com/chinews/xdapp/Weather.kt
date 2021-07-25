@@ -11,14 +11,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.chinews.xdapp.R.drawable.*
 import com.chinews.xdapp.R.id.*
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.annotation.Nullable
@@ -224,43 +223,33 @@ ${getString(R.string.濕度)}$humd%
 
     private fun covid() {
         load = ProgressDialog.show(this, "讀取中", "請稍候", true)
-        Thread {
-            val jsoni = StringBuilder()
-            try {
-                val url = URL("https://api.data.gov.hk/v2/filter?q=%7B%22resource%22%3A%22http%3A%2F%2Fwww.chp.gov.hk%2Ffiles%2Fmisc%2Flatest_situation_of_reported_cases_covid_19_chi.csv%22%2C%22section%22%3A1%2C%22format%22%3A%22json%22%7D")
-                val connection = url.openConnection() as HttpURLConnection
-                val `is` = connection.inputStream
-                val `in` = BufferedReader(InputStreamReader(`is`))
-                var line = `in`.readLine()
-                json = StringBuilder()
-                while (line != null) {
-                    json.append(line)
-                    line = `in`.readLine()
-                }
-                val url1 = URL("https://chp-dashboard.geodata.gov.hk/covid-19/data/keynum.json")
-                val connection1 = url1.openConnection() as HttpURLConnection
-                val is1 = connection1.inputStream
-                val in1 = BufferedReader(InputStreamReader(is1))
-                var line1 = in1.readLine()
-                while (line1 != null) {
-                    jsoni.append(line1)
-                    line1 = in1.readLine()
-                }
-                Log.d("data", jsoni.toString())
-                val jsonObject = JSONObject(jsoni.toString())
-                val chartjson = JSONArray(json.toString())
-                covidnew = jsonObject.getInt("Confirmed")
-                covidold = jsonObject.getInt("P_Confirmed")
-                death = jsonObject.getString("Death")
-                chartdate = chartjson.getJSONObject(chartjson.length() - 1).getString("更新日期")
-                date = formatData("dd/MM/yyyy HH:mm", jsonObject.getLong("As_of_date"))
-                notsick = jsonObject.getInt("Discharged")
-                Log.d("data", "新增確診:${(covidnew - covidold)}")
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            load?.dismiss()
-        }.start()
+        val url = "https://api.data.gov.hk/v2/filter?q=%7B%22resource%22%3A%22http%3A%2F%2Fwww.chp.gov.hk%2Ffiles%2Fmisc%2Flatest_situation_of_reported_cases_covid_19_chi.csv%22%2C%22section%22%3A1%2C%22format%22%3A%22json%22%7D"
+        val url1 = "https://chp-dashboard.geodata.gov.hk/covid-19/data/keynum.json"
+        Volley.newRequestQueue(this).add(
+                StringRequest(Request.Method.GET, url,{ json ->
+                    Volley.newRequestQueue(this).add(
+                            StringRequest(Request.Method.GET, url1, {
+                                jsoni ->
+                                try{
+                                    this.json = StringBuilder(json)
+                                Log.d("data", jsoni.toString())
+                                val jsonObject = JSONObject(jsoni.toString())
+                                val chartjson = JSONArray(json.toString())
+                                covidnew = jsonObject.getInt("Confirmed")
+                                covidold = jsonObject.getInt("P_Confirmed")
+                                death = jsonObject.getString("Death")
+                                chartdate = chartjson.getJSONObject(chartjson.length() - 1).getString("更新日期")
+                                date = formatData("dd/MM/yyyy HH:mm", jsonObject.getLong("As_of_date"))
+                                notsick = jsonObject.getInt("Discharged")
+                                Log.d("data", "新增確診:${(covidnew - covidold)}")
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                                    load?.dismiss()
+                            }
+                , Throwable::printStackTrace
+                ))}, Throwable::printStackTrace
+));
     }
 
     private fun warnsumdo(@Nullable code: String?, @Nullable actcode: String?, res: Int, jsoncode: String) {

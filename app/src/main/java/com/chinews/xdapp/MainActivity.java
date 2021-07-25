@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView36);
         TextView textView1 = findViewById(R.id.textView2);
         //textView1.setVisibility(View.VISIBLE
-        new Handler().post(() -> {
             textView1.setVisibility(View.VISIBLE);
             imageview.setVisibility(View.VISIBLE);
             textView.setText(getString(R.string.h));
@@ -154,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                 textView1.setVisibility(View.VISIBLE);
                 imageview.setVisibility(View.VISIBLE);
             }
-        });
         if (Objects.equals(category, "test")) {
             textView.setText("感謝幫忙測試志報新聞社，下一次測試期將會在下一個測試版本發放時開啟");
             textView1.setVisibility(View.INVISIBLE);

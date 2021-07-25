@@ -10,6 +10,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +27,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 
@@ -52,7 +59,6 @@ public class CheckJson extends AppCompatActivity {
     private String catchTitle;
     private ProgressDialog dialogweather;
     private ProgressDialog dialogflw;
-    private String catchSwt;
     private ProgressDialog dialogSwt;
     private StringBuilder desc;
 
@@ -106,7 +112,7 @@ public class CheckJson extends AppCompatActivity {
     //Bundle bundle = getIntent().getExtras();
     //int checkjson = bundle.getInt("checkjson");
     private void catchSwt() {
-        catchSwt = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=swt&lang=tc";
+        String catchSwt = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=swt&lang=tc";
         dialogSwt = ProgressDialog.show(this, "讀取中(1/4)"
                 , "請稍候", true);
         Window window = dialogSwt.getWindow();
@@ -114,18 +120,9 @@ public class CheckJson extends AppCompatActivity {
         lp.alpha = 0.0f;// 透明度
         lp.dimAmount = 0.0f;
         window.setAttributes(lp);
-        new Thread(() -> {
-            try {
-                URL url = new URL(catchSwt);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                InputStream is = connection.getInputStream();
-                BufferedReader in = new BufferedReader(new InputStreamReader(is));
-                String line = in.readLine();
-                StringBuilder json = new StringBuilder();
-                while (line != null) {
-                    json.append(line);
-                    line = in.readLine();
-                }
+        Volley.newRequestQueue(this).add(
+                new StringRequest(Request.Method.GET, catchSwt, (Response.Listener<String>) json -> {
+                try {
                 JSONObject jsonObject = new JSONObject(json.toString());
                 JSONArray jsonArray = jsonObject.getJSONArray("swt");
                 desc = new StringBuilder();
@@ -140,56 +137,47 @@ public class CheckJson extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }).start();
+    }, Throwable::printStackTrace
+        ));
     }
 
     private void catchData() {
         catchData = "https://spreadsheets.google.com/feeds/cells/18W5B7HDpp9qYmj6wftBfyThgr0vbxLGhnmPlKZB2YsE/1/public/full?alt=json";
-        new Thread(() -> {
-            try {
-                URL url = new URL(catchData);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                InputStream is = connection.getInputStream();
-                BufferedReader in = new BufferedReader(new InputStreamReader(is));
-                String line = in.readLine();
-                StringBuilder json = new StringBuilder();
-                while (line != null) {
-                    json.append(line);
-                    line = in.readLine();
-                }
-                JSONObject jsonObject = new JSONObject(valueOf(json));
-                JSONObject jsonObject1 = jsonObject.getJSONObject("feed");
-                JSONArray jsonArray = jsonObject1.getJSONArray("entry");
-                ArrayList<String> all_content = new ArrayList<>();
-                for (int i = 6; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject2 = jsonArray.getJSONObject(i);
-                    JSONObject jsonObject3 = jsonObject2.getJSONObject("content");
-                    all_content.add(jsonObject3.getString("$t"));
-                }
+        Volley.newRequestQueue(this).add(
+                new StringRequest(Request.Method.GET, catchData, (Response.Listener<String>) json -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(valueOf(json));
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("feed");
+                        JSONArray jsonArray = jsonObject1.getJSONArray("entry");
+                        ArrayList<String> all_content = new ArrayList<>();
+                        for (int i = 6; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                            JSONObject jsonObject3 = jsonObject2.getJSONObject("content");
+                            all_content.add(jsonObject3.getString("$t"));
+                        }
 
-                for (int i = 0; i < all_content.size(); i += 4) {
-                    ArrayList<String> tmp = new ArrayList<>();
-                    tmp.add(all_content.get(i));
-                    tmp.add(all_content.get(i + 1));
-                    tmp.add(all_content.get(i + 2));
-                    tmp.add(all_content.get(i + 3));
-                    content_not_final.add(tmp);
-                }
-                Collections.reverse(content_not_final);
-                content = new ArrayList<>(new LinkedHashSet<>(content_not_final));
-                //for (int i = 0; i < content.size(); i++) {
-                //    ArrayList<String> ij = content.get(i);
-                //    for (int j = 0; j < ij.size(); j++) {
-                //        System.out.println(ij.get(j));
-                //    }
-                //}
-                startActivity(new Intent(this, VipRecyclerView.class));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-
+                        for (int i = 0; i < all_content.size(); i += 4) {
+                            ArrayList<String> tmp = new ArrayList<>();
+                            tmp.add(all_content.get(i));
+                            tmp.add(all_content.get(i + 1));
+                            tmp.add(all_content.get(i + 2));
+                            tmp.add(all_content.get(i + 3));
+                            content_not_final.add(tmp);
+                        }
+                        Collections.reverse(content_not_final);
+                        content = new ArrayList<>(new LinkedHashSet<>(content_not_final));
+                        //for (int i = 0; i < content.size(); i++) {
+                        //    ArrayList<String> ij = content.get(i);
+                        //    for (int j = 0; j < ij.size(); j++) {
+                        //        System.out.println(ij.get(j));
+                        //    }
+                        //}
+                        startActivity(new Intent(this, VipRecyclerView.class));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, Throwable::printStackTrace
+                ));
     }
 
     private void catchWeather() {
@@ -201,18 +189,8 @@ public class CheckJson extends AppCompatActivity {
         lp.alpha = 0.0f;// 透明度
         lp.dimAmount = 0.0f;
         window.setAttributes(lp);
-        new Thread(() -> {
-            try {
-                URL url = new URL(catchWeather);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                InputStream is = connection.getInputStream();
-                BufferedReader in = new BufferedReader(new InputStreamReader(is));
-                String line = in.readLine();
-                StringBuilder json = new StringBuilder();
-                while (line != null) {
-                    json.append(line);
-                    line = in.readLine();
-                }
+        Volley.newRequestQueue(this).add(
+                new StringRequest(Request.Method.GET, catchWeather, (Response.Listener<String>) json -> {
                 try {
                     JSONObject jsonObject = new JSONObject(valueOf(json));
 
@@ -245,50 +223,31 @@ public class CheckJson extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }).start();
+                }, Throwable::printStackTrace
+                ));
     }
 
     private void catchTitle() {
         catchTitle = "https://spreadsheets.google.com/feeds/cells/18W5B7HDpp9qYmj6wftBfyThgr0vbxLGhnmPlKZB2YsE/1/public/full?alt=json";
-        new Thread(() -> {
-            try {
-                URL url = new URL(catchTitle);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                InputStream is = connection.getInputStream();
-                BufferedReader in = new BufferedReader(new InputStreamReader(is));
-                String line = in.readLine();
-                StringBuilder json = new StringBuilder();
-                while (line != null) {
-                    json.append(line);
-                    line = in.readLine();
-                }
-
-                try {
-                    JSONObject jsonObject = new JSONObject(valueOf(json));
-                    JSONObject jsonObject1 = jsonObject.getJSONObject("feed");
-                    JSONArray jsonArray = jsonObject1.getJSONArray("entry");
-                    JSONObject jsonObject2 = jsonArray.getJSONObject(1);
-                    JSONObject jsonObject3 = jsonObject2.getJSONObject("content");
-                    String tt = jsonObject3.getString("$t");
-                    Intent intent = new Intent();
-                    intent.setClass(CheckJson.this, Home.class);
-                    intent.putExtra("tt", tt);
-                    startActivity(intent);
-                    Log.d("data", tt);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }).start();
-
-
+        Volley.newRequestQueue(this).add(
+                new StringRequest(Request.Method.GET, catchTitle, (Response.Listener<String>) json -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(valueOf(json));
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("feed");
+                        JSONArray jsonArray = jsonObject1.getJSONArray("entry");
+                        JSONObject jsonObject2 = jsonArray.getJSONObject(1);
+                        JSONObject jsonObject3 = jsonObject2.getJSONObject("content");
+                        String tt = jsonObject3.getString("$t");
+                        Intent intent = new Intent();
+                        intent.setClass(CheckJson.this, Home.class);
+                        intent.putExtra("tt", tt);
+                        startActivity(intent);
+                        Log.d("data", tt);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, Throwable::printStackTrace
+        ));
     }
 
     private void catchWeatherflw() {
@@ -300,19 +259,8 @@ public class CheckJson extends AppCompatActivity {
         lp.alpha = 0.0f;// 透明度
         lp.dimAmount = 0.0f;
         window.setAttributes(lp);
-        new Thread(() -> {
-            try {
-                URL url = new URL(catchWeatherflw);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                InputStream is = connection.getInputStream();
-                BufferedReader in = new BufferedReader(new InputStreamReader(is));
-                String line = in.readLine();
-                StringBuilder json = new StringBuilder();
-                while (line != null) {
-                    json.append(line);
-                    line = in.readLine();
-                }
-
+        Volley.newRequestQueue(this).add(
+                new StringRequest(Request.Method.GET, catchWeatherflw, (Response.Listener<String>) json -> {
                 try {
                     JSONObject jsonObject = new JSONObject(valueOf(json));
                     gesi = jsonObject.getString("generalSituation");
@@ -326,12 +274,7 @@ public class CheckJson extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }).start();
-
-
+                }, Throwable::printStackTrace
+                ));
     }
 }
