@@ -100,6 +100,30 @@
         app:layout_constraintTop_toTopOf="@+id/imageView23"
         app:layout_constraintVertical_bias="0.4" />
 
+    <ImageView
+        android:id="@+id/imageViewaa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        android:contentDescription="@string/TODO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:srcCompat="@drawable/newsvip_buttonxml" />
+
+    <TextView
+        android:id="@+id/textViewaa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員搶先看"
+        android:textColor="@color/text"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewaa"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewaa"
+        app:layout_constraintStart_toStartOf="@+id/imageViewaa"
+        app:layout_constraintTop_toTopOf="@+id/imageViewaa"
+        app:layout_constraintVertical_bias="0.4" />
     <fragment
         android:name="com.chinews.xdapp.Bottom"
         android:layout_width="match_parent"

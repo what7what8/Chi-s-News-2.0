@@ -1,5 +1,6 @@
 package com.chinews.xdapp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ import java.util.LinkedHashSet;
 import static java.lang.String.valueOf;
 
 public class CheckJson extends AppCompatActivity {
-
     public static ArrayList<ArrayList<String>> content;
     private final ArrayList<ArrayList<String>> content_not_final = new ArrayList<>();
     String catchData;
@@ -55,8 +55,6 @@ public class CheckJson extends AppCompatActivity {
     private int icon;
     private int temp;
     private int ramx;
-    //private int weahter = 0;
-    private String catchTitle;
     private ProgressDialog dialogweather;
     private ProgressDialog dialogflw;
     private ProgressDialog dialogSwt;
@@ -121,13 +119,13 @@ public class CheckJson extends AppCompatActivity {
         lp.dimAmount = 0.0f;
         window.setAttributes(lp);
         Volley.newRequestQueue(this).add(
-                new StringRequest(Request.Method.GET, catchSwt, (Response.Listener<String>) json -> {
+                new StringRequest(Request.Method.GET, catchSwt, json -> {
                 try {
-                JSONObject jsonObject = new JSONObject(json.toString());
+                JSONObject jsonObject = new JSONObject(json);
                 JSONArray jsonArray = jsonObject.getJSONArray("swt");
                 desc = new StringBuilder();
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    if (json.toString().contains("desc")) {
+                    if (json.contains("desc")) {
                         desc.append("\n").append(jsonArray.getJSONObject(i).getString("desc"));
                     } else {
                         desc.append("");
@@ -142,9 +140,9 @@ public class CheckJson extends AppCompatActivity {
     }
 
     private void catchData() {
-        catchData = "https://spreadsheets.google.com/feeds/cells/18W5B7HDpp9qYmj6wftBfyThgr0vbxLGhnmPlKZB2YsE/1/public/full?alt=json";
+        catchData = "https://script.google.com/macros/s/AKfycbxLukMUU7QxB3c7o62z9uj5oM0rTRw_4Q97Gh9A8zE5ohiwtRAsGMlaUN7HKWGs9gpTZQ/exec";
         Volley.newRequestQueue(this).add(
-                new StringRequest(Request.Method.GET, catchData, (Response.Listener<String>) json -> {
+                new StringRequest(Request.Method.GET, catchData, json -> {
                     try {
                         JSONObject jsonObject = new JSONObject(valueOf(json));
                         JSONObject jsonObject1 = jsonObject.getJSONObject("feed");
@@ -190,7 +188,7 @@ public class CheckJson extends AppCompatActivity {
         lp.dimAmount = 0.0f;
         window.setAttributes(lp);
         Volley.newRequestQueue(this).add(
-                new StringRequest(Request.Method.GET, catchWeather, (Response.Listener<String>) json -> {
+                new StringRequest(Request.Method.GET, catchWeather, json -> {
                 try {
                     JSONObject jsonObject = new JSONObject(valueOf(json));
 
@@ -228,9 +226,10 @@ public class CheckJson extends AppCompatActivity {
     }
 
     private void catchTitle() {
-        catchTitle = "https://spreadsheets.google.com/feeds/cells/18W5B7HDpp9qYmj6wftBfyThgr0vbxLGhnmPlKZB2YsE/1/public/full?alt=json";
+        //private int weahter = 0;
+        String catchTitle = "https://script.google.com/macros/s/AKfycbxLukMUU7QxB3c7o62z9uj5oM0rTRw_4Q97Gh9A8zE5ohiwtRAsGMlaUN7HKWGs9gpTZQ/exec";
         Volley.newRequestQueue(this).add(
-                new StringRequest(Request.Method.GET, catchTitle, (Response.Listener<String>) json -> {
+                new StringRequest(Request.Method.GET, catchTitle, json -> {
                     try {
                         JSONObject jsonObject = new JSONObject(valueOf(json));
                         JSONObject jsonObject1 = jsonObject.getJSONObject("feed");
@@ -260,7 +259,7 @@ public class CheckJson extends AppCompatActivity {
         lp.dimAmount = 0.0f;
         window.setAttributes(lp);
         Volley.newRequestQueue(this).add(
-                new StringRequest(Request.Method.GET, catchWeatherflw, (Response.Listener<String>) json -> {
+                new StringRequest(Request.Method.GET, catchWeatherflw, json -> {
                 try {
                     JSONObject jsonObject = new JSONObject(valueOf(json));
                     gesi = jsonObject.getString("generalSituation");

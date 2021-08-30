@@ -1,5 +1,7 @@
 package com.chinews.xdapp
 
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class NewsRecyclerViewAdapter internal constructor(var newsObjs: ArrayList<NewsObj>) : RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
+class NewsRecyclerViewAdapter internal constructor(var newsObjs: ArrayList<NewsObj>, val color: Boolean) : RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // 連結項目布局檔list_item
         val view = LayoutInflater.from(parent.context)
@@ -30,6 +32,12 @@ class NewsRecyclerViewAdapter internal constructor(var newsObjs: ArrayList<NewsO
                     } else "報章"
             if (!newsObjs[position].bitmaps.isNullOrEmpty()){
                 holder.news.setImageBitmap(newsObjs[position].bitmaps[0])
+            }
+            if (!color){
+                val cm = ColorMatrix()
+                cm.setSaturation(0f) // 设置饱和度
+                val grayColorFilter = ColorMatrixColorFilter(cm)
+                holder.news.colorFilter = grayColorFilter
             }
         } catch (e: Exception) {
             e.printStackTrace()

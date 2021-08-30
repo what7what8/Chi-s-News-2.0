@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="false"
         android:fullBackupContent="false"
@@ -18,9 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.志報新聞社"
+        android:name=".App"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".OldNews"></activity>
+        <activity android:name=".VipNews"></activity>
+        <activity android:name=".OldNews" />
         <activity android:name=".NewsInfo" />
         <activity android:name=".LastNews" />
         <activity android:name=".Help" />

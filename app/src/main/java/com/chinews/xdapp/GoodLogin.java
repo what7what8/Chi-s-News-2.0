@@ -25,9 +25,6 @@ public class GoodLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_login);
-        TextView textView = findViewById(R.id.textView20);
-        TextView textView1 = findViewById(R.id.textView22);
-        TextView textView2 = findViewById(R.id.textView21);
         ImageView imageView = findViewById(R.id.imageView17);
         Intent intent = this.getIntent();
         StringBuilder json = new StringBuilder();

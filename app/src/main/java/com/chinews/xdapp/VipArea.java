@@ -14,8 +14,10 @@ import java.io.PrintWriter;
 
 import static com.chinews.xdapp.R.id.imageView22;
 import static com.chinews.xdapp.R.id.imageView23;
+import static com.chinews.xdapp.R.id.imageViewaa;
 import static com.chinews.xdapp.R.id.textView24;
 import static com.chinews.xdapp.R.id.textView25;
+import static com.chinews.xdapp.R.id.textViewaa;
 
 public class VipArea extends AppCompatActivity {
     @Override
@@ -33,6 +35,8 @@ public class VipArea extends AppCompatActivity {
 
         TextView textView = findViewById(textView24);
         ImageView imageView = findViewById(imageView23);
+        TextView news = findViewById(textViewaa);
+        ImageView but = findViewById(imageViewaa);
         imageView.setOnClickListener(v -> {
             try {
                 FileOutputStream fileOutputStream = openFileOutput("cache_text", MODE_PRIVATE);
@@ -72,6 +76,7 @@ public class VipArea extends AppCompatActivity {
             intent.putExtra("json", 2);
             startActivity(intent);
         });
-
+        news.setOnClickListener(v -> startActivity(new Intent(VipArea.this, VipNews.class)));
+        but.setOnClickListener(v -> startActivity(new Intent(VipArea.this, VipNews.class)));
     }
 }

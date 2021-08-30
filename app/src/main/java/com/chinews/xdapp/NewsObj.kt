@@ -1,6 +1,5 @@
 package com.chinews.xdapp
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -15,26 +14,25 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Suppress("unused")
 data class NewsObj(
         var cy: String,
         var date: Long,
         var id: String,
-        var newscode: String,
-        var content: Context){
+        var newscode: String){
     val bitmaps: ArrayList<Bitmap> = arrayListOf()
-    var loading = true
+    var loading: Boolean = true
+        private set
+
     fun getSearchKeyWord(): String{
-        val returnstr = cy.replace("の","之")+newscode+SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(date)
         //Log.d("data", "getSearchKeyWord: $returnstr")
-        return returnstr
+        return cy.replace("の","之")+ newscode +SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(date)
     }
     fun startToGetBitmaps() {
         val gsReference = Firebase.storage("gs://chi-s-news.appspot.com").reference.child(id)
         //android.R.drawable.ic_menu_report_image
         gsReference.listAll().addOnSuccessListener {
             for (i in 0 until it.items.size) {
-                val localflie = File(content.cacheDir, "${it.items[i].name}.webp")
+                val localflie = File(App.getContext().cacheDir, "${it.items[i].name}_${id}.webp")
                 if (localflie.exists()){
                     bitmaps.add(BitmapFactory.decodeFile(localflie.path))
                     loading = false
@@ -44,7 +42,7 @@ data class NewsObj(
                         bitmaps.add(BitmapFactory.decodeFile(localflie.path, getBitmapOption(2)))
                         Log.d("data", "just read")
                     }.addOnFailureListener { it1 ->
-                        bitmaps.add(drawableToBitmap(ContextCompat.getDrawable(content, android.R.drawable.ic_menu_report_image)!!))
+                        bitmaps.add(drawableToBitmap(ContextCompat.getDrawable(App.getContext(), android.R.drawable.ic_menu_report_image)!!))
                         Log.d("data", "why error:${it1.stackTraceToString()}")
                     }.addOnCompleteListener {
                         loading = false
@@ -55,7 +53,7 @@ data class NewsObj(
                 }
             }
         }.addOnFailureListener {
-            bitmaps.add(drawableToBitmap(ContextCompat.getDrawable(content, android.R.drawable.ic_menu_report_image)!!))
+            bitmaps.add(drawableToBitmap(ContextCompat.getDrawable(App.getContext(), android.R.drawable.ic_menu_report_image)!!))
         }
     }
 

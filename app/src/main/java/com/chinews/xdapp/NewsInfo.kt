@@ -18,7 +18,7 @@ class NewsInfo : AppCompatActivity() {
         }else {
             getOldNewsObj!!
         }
-        val saMenuItem = NewsInfoGridViewAdapter(this,newsObj)
+        val saMenuItem = NewsInfoGridViewAdapter(this,newsObj,AccountTool(this).isLogin())
 
 //新增Item到網格中
         //新增Item到網格中

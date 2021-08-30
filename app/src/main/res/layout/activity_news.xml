@@ -33,33 +33,6 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <TextView
-        android:id="@+id/textView18"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:gravity="start|top"
-        android:textColor="@color/text"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/half_parent_width"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextClock
-        android:id="@+id/textclock"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="1dp"
-        android:format12Hour=""
-        android:gravity="top|end"
-        android:singleLine="true"
-        android:textColor="@color/text"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/half_parent_width" />
-
-    <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -134,16 +107,14 @@
         app:layout_constraintTop_toTopOf="@+id/imageView15"
         app:layout_constraintVertical_bias="0.4" />
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        app:adSize="BANNER"
-        app:adUnitId="@string/ads_id"
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.chinews.xdapp.Bottom"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout="@layout/fragment_buttom" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

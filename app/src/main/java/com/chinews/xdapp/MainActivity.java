@@ -9,7 +9,6 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,39 +29,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.Objects;
-
 public class MainActivity extends AppCompatActivity {
     private long exitTime = 0;
-    private String username;
-    private String status;
-    private String category;
-    //private String rjson;
-
-    //private static byte[] DecryptAES(byte[] iv, byte[] key, byte[] text) {
-    //    try {
-    //        AlgorithmParameterSpec mAlgorithmParameterSpec = new IvParameterSpec(iv);
-    //        SecretKeySpec mSecretKeySpec = new SecretKeySpec(key, "AES");
-    //        Cipher mCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-    //        mCipher.init(Cipher.DECRYPT_MODE,
-    //                mSecretKeySpec,
-    //                mAlgorithmParameterSpec);
-//
-    //        return mCipher.doFinal(text);
-    //    } catch (Exception ex) {
-    //        return null;
-    //    }
-    //}
 
     private void createNotificationChannel(CharSequence channel_name, String channel_description, String CHANNEL_ID) {
         // Create the NotificationChannel, but only on API 26+ because
@@ -84,20 +52,6 @@ public class MainActivity extends AppCompatActivity {
         if ((System.currentTimeMillis() - exitTime) > 2000) {
             Toast.makeText(getApplicationContext(), R.string.ae, Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
-        } else {
-            if (category.equals("test")) {
-                try {
-                    FileOutputStream fileOutputStream = openFileOutput("cache_text", MODE_PRIVATE);
-                    PrintWriter writer = new PrintWriter(new OutputStreamWriter(fileOutputStream));
-                    writer.write("logout out now");
-                    writer.flush();
-                    writer.close();
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            finishAffinity();
         }
     }
 
@@ -111,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 SafetyNetAppCheckProviderFactory.getInstance());
         setContentView(R.layout.activity_logon);
         ImageView imageview = findViewById(R.id.imageView5);
+        String username = new AccountTool(this).getUserName();
+        boolean status = new AccountTool(this).isLogin();
         createNotificationChannel("應用程式更新通知", "用於在程式有可用更新時通知您", "update");
         createNotificationChannel("志報更新通知", "用於在志報有更新時通知您", "news");
         createNotificationChannel("其他通知", "其他的通知", "other");
@@ -118,46 +74,17 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel("前景服務通知", "死人爛鬼系統逼我send通知", "foreground");
         createNotificationChannel("會員消息通知", "在開通會員服務後，有新的會員消息時通知", "vipmsg");
         startService(new Intent(getBaseContext(), MessageNotification.class));
-        try {
-            FileInputStream fileInputStream = openFileInput("cache_text");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-            String line = bufferedReader.readLine();
-            StringBuilder json = new StringBuilder();
-            while (line != null) {
-                // Log.d("data", "" + line);
-                json.append(line);
-                line = bufferedReader.readLine();
-            }
-            try {
-                JSONObject jsonObject1 = new JSONObject(String.valueOf(json));
-                username = jsonObject1.getString("username");
-                //email = jsonObject.getString("email");
-                category = jsonObject1.getString("category");
-                status = jsonObject1.getString("status");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            bufferedReader.close();
-            fileInputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         TextView textView = findViewById(R.id.textView36);
         TextView textView1 = findViewById(R.id.textView2);
         //textView1.setVisibility(View.VISIBLE
             textView1.setVisibility(View.VISIBLE);
             imageview.setVisibility(View.VISIBLE);
             textView.setText(getString(R.string.h));
-            if (Objects.equals(status, "login")) {
+            if (status) {
                 textView.setText(getString(R.string.ai) + username);
                 textView1.setVisibility(View.VISIBLE);
                 imageview.setVisibility(View.VISIBLE);
             }
-        if (Objects.equals(category, "test")) {
-            textView.setText("感謝幫忙測試志報新聞社，下一次測試期將會在下一個測試版本發放時開啟");
-            textView1.setVisibility(View.INVISIBLE);
-            imageview.setVisibility(View.INVISIBLE);
-        }
         imageview.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CheckJson.class);
             intent.putExtra("json", 3);

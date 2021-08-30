@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ListResult
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,34 +33,31 @@ class LastNews : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_last_news)
         val news = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("news")
-        news.addChildEventListener(childEventListener)
-            lastChildRunnable = Runnable {
-                    Log.d("data", "thread")
+        val listener = news.addChildEventListener(childEventListener)
+        val progressDialog = ProgressDialog.show(this,"下載並載入圖片","Loading...")
+        lastChildRunnable = Runnable {
+                news.removeEventListener(listener)
+                Log.d("data", "thread")
                     reverseNewsObjArray = ArrayList(newsObjArray)
                     reverseNewsObjArray.reverse()
-                    var progress = 0
                     reverseNewsObjArray.forEach {
-                        if (!cyArray.contains(it.cy)) {
+                        if (!cyArray.contains(it.cy) && Date(it.date).before(Date())) {
                             cyArray.add(it.cy)
                             lastNewsArray.add(it)
-                            it.startToGetBitmaps()
+                            Thread{
+                                it.startToGetBitmaps()
+                            }.start()
                         }
                     }
-                val progressDialog = ProgressDialog(this)
-                progressDialog.progress = 0
-                progressDialog.setTitle("下載並載入圖片")
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-                progressDialog.max = lastNewsArray.size
-                progressDialog.show()
                 Thread{
                     for (i in lastNewsArray.indices){
                         do {
                             if (!lastNewsArray[i].loading) break
                         } while (lastNewsArray[i].loading)
-                        runOnUiThread {
-                            progress++
-                            progressDialog.progress = progress
-                        }
+                    }
+                    if (lastNewsArray.isEmpty()) {
+                        val no = findViewById<TextView>(R.id.no)
+                        no.visibility = View.VISIBLE
                     }
                 runOnUiThread {
                     val recyclerview = findViewById<RecyclerView>(R.id.reclist)
@@ -67,7 +66,7 @@ class LastNews : AppCompatActivity() {
                     recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
                     // 將資料交給adapter
                     // 設置adapter給recycler_view
-                    recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray)
+                    recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray,AccountTool(this).isLogin())
                     progressDialog.cancel()
                 }
             }.start()
@@ -110,7 +109,7 @@ class LastNews : AppCompatActivity() {
                         }else {
                             snapshot.key!!.substring(0 until snapshot.key!!.lastIndexOf("|")).toLong()
                         }
-                        , newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString(),this@LastNews))
+                        , newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
                 Log.d("data", newsHashMap["cy"]!!.toString())
             } catch (ignored: NullPointerException){}
         }

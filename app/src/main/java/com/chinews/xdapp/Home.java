@@ -24,8 +24,7 @@ import java.io.InputStreamReader;
 
 public class Home extends AppCompatActivity {
     private long exitTime = 0;
-    private String status;
-
+    private boolean status;
 
     //exit
     @Override
@@ -42,34 +41,7 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        try {
-            FileInputStream fileInputStream = openFileInput("cache_text");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-            String line = bufferedReader.readLine();
-            StringBuilder json = new StringBuilder();
-            while (line != null) {
-                json.append(line);
-                line = bufferedReader.readLine();
-            }
-            try {
-                JSONObject jsonObject1 = new JSONObject(String.valueOf(json));
-                //username = jsonObject.getString("username");
-                //email = jsonObject.getString("email");
-                //category = jsonObject.getString("category");
-                status = jsonObject1.getString("status");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            bufferedReader.close();
-            fileInputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (status == null) {
-            status = "not login";
-        }
-        Log.i("Chi's News", status);
+        status = new AccountTool(this).isLogin();
         //Button Image
         ImageView imageview = findViewById(R.id.imageView9);
         imageview.setOnClickListener(v -> {
@@ -78,7 +50,7 @@ public class Home extends AppCompatActivity {
         });
         ImageView imageview2 = findViewById(R.id.imageView10);
         imageview2.setOnClickListener(v -> {
-            if (status.equals("login")) {
+            if (status) {
                 Intent intent = new Intent(Home.this, VipArea.class);
                 startActivity(intent);
             } else {
@@ -104,7 +76,7 @@ public class Home extends AppCompatActivity {
         });
         ImageView imageview5 = findViewById(R.id.imageView2);
         imageview5.setOnClickListener(v -> {
-            if (status.equals("login")) {
+            if (status) {
                 Intent intent = new Intent(Home.this, VipArea.class);
                 startActivity(intent);
             } else {
@@ -129,9 +101,9 @@ public class Home extends AppCompatActivity {
             startActivity(intent);
         });
         TextView textView2 = findViewById(R.id.textView12);
-        if (status.equals("login")) textView2.setText(R.string.af);
+        if (status) textView2.setText(R.string.af);
         textView2.setOnClickListener(v -> {
-            if (status.equals("login")) {
+            if (status) {
                 Intent intent = new Intent(Home.this, VipArea.class);
                 startActivity(intent);
             } else {

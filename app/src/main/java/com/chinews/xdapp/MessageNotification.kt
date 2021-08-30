@@ -30,51 +30,44 @@ import java.net.URL
 
 class MessageNotification : Service() {
     private var time = System.currentTimeMillis()
+    val notificationc = Notification(this)
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        notificationc.stopNotification()
+    }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         FirebaseApp.initializeApp(this)
-        sendNotification("正在獲取新訊息", "正在獲取新訊息，你可以輕按此訊息前往關閉通知。", "foreground", null, 0)
         time = System.currentTimeMillis()
-        val database = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        val ref = database.child("message")
-        val notificationRef = database.child("notification")
-        val newsRef = database.child("news")
-        notificationRef.addChildEventListener(notification)
-        ref.addChildEventListener(childEventListener)
-        newsRef.addChildEventListener(newsChildEventListener)
+        notificationc.startNotification(true)
+        val resultIntent: Intent =
+                if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.O) {
+                    Intent()
+                            .setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                            .addCategory(Intent.CATEGORY_DEFAULT)
+                            .setData(Uri.parse("package:" + this.packageName))
+                } else {
+                    Intent()
+                            .setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                            .putExtra(Settings.EXTRA_APP_PACKAGE, this.packageName)
+                            .putExtra(Settings.EXTRA_CHANNEL_ID, this.applicationInfo.uid)
+                }
+        val pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val mBuilder = NotificationCompat.Builder(applicationContext, "foreground")
+                .setContentTitle("正在獲取新訊息")
+                .setContentText("正在獲取新訊息，你可以輕按此訊息前往關閉通知。")
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setContentIntent(pendingIntent)
+        startForeground(1, mBuilder.build())
         return super.onStartCommand(intent, flags, startId)
     }
 
-    fun getCategory(): String? {
-        var category: String? = "no login"
-        try {
-            val fileInputStream = openFileInput("cache_text")
-            val bufferedReader = BufferedReader(InputStreamReader(fileInputStream))
-            var line = bufferedReader.readLine()
-            val json = StringBuilder()
-            while (line != null) {
-                // Log.d("data", "" + line);
-                json.append(line)
-                line = bufferedReader.readLine()
-            }
-            try {
-                val jsonObject1 = JSONObject(json.toString())
-                //email = jsonObject.getString("email");
-                category = jsonObject1.getString("category")
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-            bufferedReader.close()
-            fileInputStream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            return category
-        }
-    }
+
 
     private fun sendNotification(title: String, message: String, channel: String, url: String?, category: Int) {
         val resultIntent: Intent = when (category) {
@@ -205,9 +198,10 @@ class MessageNotification : Service() {
             val can: Boolean
             Log.d("data", "onChildChanged: good")
             val hashMap = snapshot.value as HashMap<*,*>
-            can = if (getCategory().equals("cusser")) true
-            else getCategory()?.let { hashMap[4].toString().contains(it) } == true
-            Log.d("data", "onChildChanged: ${getCategory()},$can")
+            val category = AccountTool(this@MessageNotification).getCategory()
+            can = if (category == "cusser") true
+            else category.let { hashMap[4].toString().contains(it) }
+            Log.d("data", "onChildChanged: ${category},$can")
             if (can) {
                 Log.d("data", "onChildChanged: good1")
                 channel = hashMap[0].toString()
