@@ -33,46 +33,51 @@ class OldNews : AppCompatActivity() {
     private val lastChildHandler: Handler = Handler()
     private lateinit var lastChildRunnable :Runnable
     private var isLogin: Boolean = false
+    var progressDialog: ProgressDialog? = null
+    override fun onDestroy() {
+        progressDialog?.dismiss()
+        super.onDestroy()
+    }
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_old_news)
         isLogin = AccountTool(this).isLogin()
         val news = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("news")
-        val progressDialog = ProgressDialog(this)
+        progressDialog = ProgressDialog(this)
         val listener = news.addChildEventListener(childEventListener)
-        progressDialog.max = 1
-        progressDialog.progress = 0
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-        progressDialog.setTitle("下載並載入圖片")
-        progressDialog.show()
+        progressDialog!!.max = 1
+        progressDialog!!.progress = 0
+        progressDialog!!.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+        progressDialog!!.setTitle("下載並載入圖片")
+        progressDialog!!.show()
         lastChildRunnable = Runnable {
             news.removeEventListener(listener)
             Thread{
                 newsObjArray.forEach {
                     if (Date(it.date).before(Date())){
                         oldNewsObjArray.add(it)
-                        progressDialog.max++
+                        progressDialog!!.max++
                         Thread {
                             it.startToGetBitmaps()
                         }.start()
                     }
                 }
-                progressDialog.max--
+                progressDialog!!.max--
                 Log.d("data", "thread")
                 Log.d("data", "${oldNewsObjArray.size}")
                 oldNewsObjArray.forEach {
                     do {
                         if (!it.loading) break
                     } while (it.loading)
-                    progressDialog.progress++
-                }
-                if (oldNewsObjArray.isEmpty()) {
-                    val no = findViewById<TextView>(R.id.no)
-                    no.visibility = View.VISIBLE
+                    progressDialog!!.progress++
                 }
                 Log.d("data", "while end")
                 runOnUiThread {
+                    if (oldNewsObjArray.isEmpty()) {
+                        val no = findViewById<TextView>(R.id.no)
+                        no.visibility = View.VISIBLE
+                    }
                     val recyclerview = findViewById<RecyclerView>(R.id.reclist)
                     recyclerview.layoutManager = LinearLayoutManager(this)
                     // 設置格線
@@ -83,7 +88,7 @@ class OldNews : AppCompatActivity() {
                     findViewById<SearchView>(R.id.searchView).setOnQueryTextListener(onQueryTextListener)
                     Thread{
                         Thread.sleep(500)
-                        progressDialog.dismiss()
+                        progressDialog!!.dismiss()
                     }.start()
                 }
             }.start()

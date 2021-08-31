@@ -7,19 +7,13 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.net.Uri
-import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
-import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.initialize
-import kotlinx.coroutines.newFixedThreadPoolContext
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -28,33 +22,28 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class Notification constructor(val context: Context) {
-    var listener : ChildEventListener? = null
-    var chatlistener : ChildEventListener? = null
-    var newslistener : ChildEventListener? = null
-    lateinit var database: DatabaseReference
-    lateinit var ref: DatabaseReference
-    lateinit var notificationRef: DatabaseReference
-    lateinit var newsRef: DatabaseReference
     var foreground = false
 
     fun startNotification(foreground: Boolean) {
         this.foreground = foreground
-        database = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        ref = database.child("message")
-        notificationRef = database
-        newsRef = database.child("news")
-        listener = notificationRef.addChildEventListener(notification)
-        if (!foreground){
-            chatlistener = ref.addChildEventListener(childEventListener)
+        val database = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference
+        val ref = database.child("message")
+        val newsRef = database.child("news")
+        database.addChildEventListener(notification)
+        if (foreground){
+            ref.addChildEventListener(childEventListener)
+        } else {
+            ref.removeEventListener(childEventListener)
         }
-        newslistener = newsRef.addChildEventListener(newsChildEventListener)
+        newsRef.addChildEventListener(newsChildEventListener)
     }
     fun stopNotification(){
-        notificationRef.removeEventListener(listener!!)
-        if (!foreground){
-            ref.removeEventListener(chatlistener!!)
-        }
-        newsRef.removeEventListener(newslistener!!)
+        val database = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference
+        val ref = database.child("message")
+        val newsRef = database.child("news")
+        database.removeEventListener(notification)
+        ref.removeEventListener(childEventListener)
+        newsRef.removeEventListener(newsChildEventListener)
     }
 
     private fun sendNotification(title: String, message: String, channel: String, url: String?,category: Int) {
@@ -129,16 +118,22 @@ class Notification constructor(val context: Context) {
         @SuppressLint("SimpleDateFormat")
         override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
             if ((System.currentTimeMillis() - time) > 10000) {
-                val hashMap = dataSnapshot as ArrayList<*>
+                val hashMap = dataSnapshot.value as ArrayList<*>
                 username = when (hashMap[0].toString()) {
                     "null" -> {
+                        context.getString(R.string.username) + " "
+                    }
+                    "" -> {
                         context.getString(R.string.username) + " "
                     }
                     else -> {
                         hashMap[0].toString() + " "
                     }
                 }
-                sendNotification("你收到一條訊息", "${username}說: ${hashMap[2]}", "chat", null, 1)
+                if (hashMap.size <= 3 && foreground){
+                    Log.d("data", "$foreground")
+                    sendNotification("你收到一條訊息", "${username}說: ${hashMap[2]}", "chat", null, 1)
+                }
                 time = System.currentTimeMillis()
             }
         }

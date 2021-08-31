@@ -77,14 +77,14 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView36);
         TextView textView1 = findViewById(R.id.textView2);
         //textView1.setVisibility(View.VISIBLE
+        textView1.setVisibility(View.VISIBLE);
+        imageview.setVisibility(View.VISIBLE);
+        textView.setText(getString(R.string.h));
+        if (status) {
+            textView.setText(getString(R.string.ai) + username);
             textView1.setVisibility(View.VISIBLE);
             imageview.setVisibility(View.VISIBLE);
-            textView.setText(getString(R.string.h));
-            if (status) {
-                textView.setText(getString(R.string.ai) + username);
-                textView1.setVisibility(View.VISIBLE);
-                imageview.setVisibility(View.VISIBLE);
-            }
+        }
         imageview.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CheckJson.class);
             intent.putExtra("json", 3);

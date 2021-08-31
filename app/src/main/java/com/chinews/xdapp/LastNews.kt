@@ -16,9 +16,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ListResult
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 var getLastNewsObj :NewsObj? = null
 class LastNews : AppCompatActivity() {
@@ -28,13 +28,18 @@ class LastNews : AppCompatActivity() {
     private var reverseNewsObjArray = arrayListOf<NewsObj>()
     private val lastChildHandler: Handler = Handler()
     private lateinit var lastChildRunnable :Runnable
+    var progressDialog: ProgressDialog? = null
+    override fun onDestroy() {
+        progressDialog?.dismiss()
+        super.onDestroy()
+    }
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_last_news)
         val news = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("news")
         val listener = news.addChildEventListener(childEventListener)
-        val progressDialog = ProgressDialog.show(this,"下載並載入圖片","Loading...")
+        progressDialog = ProgressDialog.show(this, "下載並載入圖片", "Loading...")
         lastChildRunnable = Runnable {
                 news.removeEventListener(listener)
                 Log.d("data", "thread")
@@ -55,19 +60,19 @@ class LastNews : AppCompatActivity() {
                             if (!lastNewsArray[i].loading) break
                         } while (lastNewsArray[i].loading)
                     }
+                runOnUiThread {
                     if (lastNewsArray.isEmpty()) {
                         val no = findViewById<TextView>(R.id.no)
                         no.visibility = View.VISIBLE
                     }
-                runOnUiThread {
                     val recyclerview = findViewById<RecyclerView>(R.id.reclist)
                     recyclerview.layoutManager = LinearLayoutManager(this)
                     // 設置格線
                     recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
                     // 將資料交給adapter
                     // 設置adapter給recycler_view
-                    recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray,AccountTool(this).isLogin())
-                    progressDialog.cancel()
+                    recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray, AccountTool(this).isLogin())
+                    progressDialog!!.dismiss()
                 }
             }.start()
             }
@@ -92,7 +97,7 @@ class LastNews : AppCompatActivity() {
         }
          */
         val intent = Intent(this, NewsInfo::class.java)
-        intent.putExtra("newsclass",0)
+        intent.putExtra("newsclass", 0)
         getLastNewsObj = lastNewsArray[position]
         startActivity(intent)
     }
@@ -104,12 +109,11 @@ class LastNews : AppCompatActivity() {
                 Log.d("data", "newsaddget")
                 val newsHashMap = snapshot.value as HashMap<*, *>
                 newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(),
-                        if (snapshot.key!!.lastIndexOf("|") == -1){
+                        if (snapshot.key!!.lastIndexOf("|") == -1) {
                             snapshot.key!!.toLong()
-                        }else {
+                        } else {
                             snapshot.key!!.substring(0 until snapshot.key!!.lastIndexOf("|")).toLong()
-                        }
-                        , newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
+                        }, newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
                 Log.d("data", newsHashMap["cy"]!!.toString())
             } catch (ignored: NullPointerException){}
         }

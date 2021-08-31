@@ -25,13 +25,18 @@ class VipNews : AppCompatActivity() {
     private val vipNewsArray = arrayListOf<NewsObj>()
     private val lastChildHandler: Handler = Handler()
     private lateinit var lastChildRunnable :Runnable
+    var progressDialog: ProgressDialog? = null
+    override fun onDestroy() {
+        progressDialog?.dismiss()
+        super.onDestroy()
+    }
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_last_news)
         val news = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("news")
         val listener = news.addChildEventListener(childEventListener)
-        val progressDialog = ProgressDialog.show(this,"下載並載入圖片","Loading...")
+        progressDialog = ProgressDialog.show(this,"下載並載入圖片","Loading...")
         lastChildRunnable = Runnable {
             Log.d("data", "thread")
             news.removeEventListener(listener)
@@ -47,11 +52,11 @@ class VipNews : AppCompatActivity() {
                         if (!it.loading) break
                     } while (it.loading)
                 }
-                if (vipNewsArray.isEmpty()) {
-                    val no = findViewById<TextView>(R.id.no)
-                    no.visibility = View.VISIBLE
-                }
                 runOnUiThread {
+                    if (vipNewsArray.isEmpty()) {
+                        val no = findViewById<TextView>(R.id.no)
+                        no.visibility = View.VISIBLE
+                    }
                     val recyclerview = findViewById<RecyclerView>(R.id.reclist)
                     recyclerview.layoutManager = LinearLayoutManager(this)
                     // 設置格線
@@ -59,7 +64,7 @@ class VipNews : AppCompatActivity() {
                     // 將資料交給adapter
                     // 設置adapter給recycler_view
                     recyclerview.adapter = NewsRecyclerViewAdapter(vipNewsArray,true)
-                    progressDialog.cancel()
+                    progressDialog!!.dismiss()
                 }
             }.start()
         }

@@ -171,8 +171,8 @@ class Todaynews : AppCompatActivity() {
         runOnUiThread {
             date = Date(System.currentTimeMillis())
             button?.text = "加載中..."
+            dialog = ProgressDialog.show(this, "讀取中", "請稍候", true)
         }
-        dialog = ProgressDialog.show(this, "讀取中", "請稍候", true)
         Thread {
             val urlcopy = url
             try {
@@ -206,7 +206,7 @@ class Todaynews : AppCompatActivity() {
                         val element = doc.select(".dbsr")[ram1]
                         val elements = element.getElementsByTag("a").first()
                         //return element.attr("herf");
-                        url = elements.attr("href")
+                        url = elements?.attr("href").toString()
                         Log.d("data???", "html:$url")
                         //while (url.contains("4gamers")) {
                         //    rand1 = Random()
@@ -274,11 +274,9 @@ class Todaynews : AppCompatActivity() {
             val commandLine = ArrayList<String>()
             commandLine.add("logcat")
             commandLine.add("-d")
-            commandLine.add("chromium:I")
-            commandLine.add("*:S")
             val clearLog = ArrayList<String>() //设置命令  logcat -c 清除日志
             clearLog.add("logcat")
-            clearLog.add("-c")
+            clearLog.add("--clear")
             process = Runtime.getRuntime().exec(commandLine.toArray(arrayOfNulls(commandLine.size)))
             val bufferedReader = BufferedReader(InputStreamReader(process?.inputStream))
             var line: String?
