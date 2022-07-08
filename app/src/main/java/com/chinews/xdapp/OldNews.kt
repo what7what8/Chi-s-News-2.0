@@ -17,12 +17,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.runBlocking
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 import java.util.*
 
 
@@ -34,10 +28,6 @@ class OldNews : AppCompatActivity() {
     private lateinit var lastChildRunnable :Runnable
     private var isLogin: Boolean = false
     var progressDialog: ProgressDialog? = null
-    override fun onDestroy() {
-        progressDialog?.dismiss()
-        super.onDestroy()
-    }
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,14 +43,12 @@ class OldNews : AppCompatActivity() {
         progressDialog!!.show()
         lastChildRunnable = Runnable {
             news.removeEventListener(listener)
-            Thread{
+            Thread {
                 newsObjArray.forEach {
-                    if (Date(it.date).before(Date())){
+                    if (Date(it.date).before(Date()) && it.cy == "志報") {
                         oldNewsObjArray.add(it)
                         progressDialog!!.max++
-                        Thread {
-                            it.startToGetBitmaps()
-                        }.start()
+                        it.startToGetBitmaps()
                     }
                 }
                 progressDialog!!.max--
@@ -74,18 +62,18 @@ class OldNews : AppCompatActivity() {
                 }
                 Log.d("data", "while end")
                 runOnUiThread {
-                    if (oldNewsObjArray.isEmpty()) {
-                        val no = findViewById<TextView>(R.id.no)
-                        no.visibility = View.VISIBLE
-                    }
                     val recyclerview = findViewById<RecyclerView>(R.id.reclist)
                     recyclerview.layoutManager = LinearLayoutManager(this)
                     // 設置格線
                     recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
                     // 將資料交給adapter
                     // 設置adapter給recycler_view
-                    recyclerview.adapter = NewsRecyclerViewAdapter(oldNewsObjArray,AccountTool(this).isLogin())
+                    recyclerview.adapter = NewsRecyclerViewAdapter(oldNewsObjArray,isLogin)
                     findViewById<SearchView>(R.id.searchView).setOnQueryTextListener(onQueryTextListener)
+                    if (newsObjArray.isEmpty()) {
+                        val no = findViewById<TextView>(R.id.no)
+                        no.visibility = View.VISIBLE
+                    }
                     Thread{
                         Thread.sleep(500)
                         progressDialog!!.dismiss()
@@ -94,12 +82,16 @@ class OldNews : AppCompatActivity() {
             }.start()
         }
     }
-    val onQueryTextListener = object : SearchView.OnQueryTextListener {
+    override fun onDestroy() {
+        progressDialog?.dismiss()
+        super.onDestroy()
+    }
+    private val onQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return try {
                 val searchNewsObjs = arrayListOf<NewsObj>()
                 val recyclerview = findViewById<RecyclerView>(R.id.reclist)
-                newsObjArray.forEach {
+                oldNewsObjArray.forEach {
                     if (query?.let { it1 -> it.getSearchKeyWord().contains(it1) } == true){
                         searchNewsObjs.add(it)
                     }
@@ -115,7 +107,7 @@ class OldNews : AppCompatActivity() {
             return try {
                 val searchNewsObjs = arrayListOf<NewsObj>()
                 val recyclerview = findViewById<RecyclerView>(R.id.reclist)
-                newsObjArray.forEach {
+                oldNewsObjArray.forEach {
                     if (newText?.let { it1 -> it.getSearchKeyWord().contains(it1) } == true){
                         searchNewsObjs.add(it)
                     }
@@ -148,7 +140,7 @@ class OldNews : AppCompatActivity() {
         }
          */
         val intent = Intent(this, NewsInfo::class.java)
-        getOldNewsObj = newsObjArray[position]
+        getOldNewsObj = (recycler_view.adapter as NewsRecyclerViewAdapter).newsObjs[position]
         Thread{
             Thread.sleep(100)
             startActivity(intent)

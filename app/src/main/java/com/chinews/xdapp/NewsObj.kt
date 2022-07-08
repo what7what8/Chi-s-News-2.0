@@ -19,10 +19,14 @@ data class NewsObj(
         var date: Long,
         var id: String,
         var newscode: String){
+    constructor(newsObj: NewsObj) : this(newsObj.cy, newsObj.date, newsObj.id, newsObj.newscode)
+
     val bitmaps: ArrayList<Bitmap> = arrayListOf()
     var loading: Boolean = true
         private set
-
+    fun getDate(): String {
+        return SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(date)
+    }
     fun getSearchKeyWord(): String{
         //Log.d("data", "getSearchKeyWord: $returnstr")
         return cy.replace("の","之")+ newscode +SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(date)
@@ -73,7 +77,7 @@ data class NewsObj(
         // 取 drawable 的颜色格式,Bitmap.createBitmap 第三个参数
         val config = if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
         val bitmap: Bitmap = if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
-            Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888) // Single color bitmap will be created of 1x1 pixel
+            Bitmap.createBitmap(1, 1, config) // Single color bitmap will be created of 1x1 pixel
         } else {
             Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
         }

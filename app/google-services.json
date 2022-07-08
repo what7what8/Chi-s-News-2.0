@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "842305377868",
+    "firebase_url": "https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "chi-s-news",
     "storage_bucket": "chi-s-news.appspot.com"
   },
@@ -36,12 +37,107 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:842305377868:android:a69808ada61b0136f146e9",
+        "android_client_info": {
+          "package_name": "com.chinews.newssender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842305377868-i9d53sf635dha80j9349llpiuo1fiqvf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpwKVZsSBCrxyQj3mN97okn830IUEXIsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842305377868-i9d53sf635dha80j9349llpiuo1fiqvf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842305377868:android:49bfeda1a3df8e8cf146e9",
+        "android_client_info": {
+          "package_name": "com.chinews.notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842305377868-i9d53sf635dha80j9349llpiuo1fiqvf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpwKVZsSBCrxyQj3mN97okn830IUEXIsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842305377868-i9d53sf635dha80j9349llpiuo1fiqvf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842305377868:android:f608da997d6e48fdf146e9",
+        "android_client_info": {
+          "package_name": "com.chinews.storagedeleted"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842305377868-i9d53sf635dha80j9349llpiuo1fiqvf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpwKVZsSBCrxyQj3mN97okn830IUEXIsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842305377868-i9d53sf635dha80j9349llpiuo1fiqvf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:842305377868:android:c6071734fc9fd770f146e9",
         "android_client_info": {
           "package_name": "com.chinews.xdapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "842305377868-tashi0qn95dhh68i2oacd1lvabc4vnf7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chinews.xdapp",
+            "certificate_hash": "28ecabf8c7c74c332cdfe427ea2c02b183e03256"
+          }
+        },
         {
           "client_id": "842305377868-i9d53sf635dha80j9349llpiuo1fiqvf.apps.googleusercontent.com",
           "client_type": 3

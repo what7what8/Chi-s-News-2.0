@@ -24,6 +24,7 @@ class AccountTool(context: Context) {
             fileInputStream.close()
             jsonObject1 = JSONObject(json.toString())
         }catch (e: IOException){}
+        catch (e: JSONException){jsonObject1=JSONObject()}
     }
     fun isLogin(): Boolean {
         var status = false
@@ -32,7 +33,7 @@ class AccountTool(context: Context) {
             if (jsonObject1.getString("status") == "login"){
                 status = true
             }
-        } catch (e: IOException) {
+        } catch (e: Exception) {
 
         } finally {
             return status
@@ -42,7 +43,7 @@ class AccountTool(context: Context) {
         var category = "no login"
             try {
                 category = jsonObject1.getString("category")
-        } catch (e: IOException) {
+        } catch (e: Exception) {
 
         } finally {
             return category
@@ -52,7 +53,7 @@ class AccountTool(context: Context) {
         var username: String? = null
         try {
             username = jsonObject1.getString("username")
-        } catch (e: IOException) {
+        } catch (e: Exception) {
 
         } finally {
             return username
