@@ -3,6 +3,8 @@ package com.chinews.xdapp;
 import android.app.Application;
 import android.content.Context;
 
+import java.math.BigDecimal;
+
 public class App extends Application {
     private static Application instance;
 

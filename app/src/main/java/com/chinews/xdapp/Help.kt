@@ -1,6 +1,8 @@
 package com.chinews.xdapp
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -46,7 +48,12 @@ class Help : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_help)
-        stopService(Intent(baseContext, MessageNotification::class.java))
+        for (appProcess in (applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as (ActivityManager)).runningAppProcesses) {
+            if (appProcess.processName == "com.chinews.xdapp:MessageNotification"){
+                android.os.Process.killProcess(appProcess.pid)
+            }
+        }
+        //stopService(Intent(baseContext, MessageNotification::class.java))
         notificationc.stopNotification()
         usernamev = (AccountTool(this).getUserName()) ?: "null"
         //email = jsonObject.getString("email");
@@ -76,21 +83,23 @@ class Help : AppCompatActivity() {
             listDialog.setTitle("更多選項")
             listDialog.setItems(items) { _, which -> // which 下标从0开始
                 if (which == 0){
-                    val message = listOf(usernamev, "$category", "不支援此訊息，請於更新後查看!","log")
+                    val message = listOf(usernamev, "$category", "不支援此訊息，請於更新後查看!", "log")
                     ref.child(System.currentTimeMillis().toString()).setValue(message).addOnFailureListener {
                         Toast.makeText(this, getString(R.string.ac), Toast.LENGTH_SHORT).show()
                     }
-                    val file = File.createTempFile("log","txt")
+                    val file = File.createTempFile("log", "txt")
                     PrintStream(file).use {
                         it.print(getLogcatInfo())
                     }
                     Firebase.storage("gs://chi-s-news.appspot.com").reference.child("Log").child(
                             "${usernamev}_" +
-                                    "${SimpleDateFormat("yyyy-MM-dd",Locale.CHINA)
-                                            .format(Date())}.txt").putFile(file.toUri())
+                                    "${
+                                        SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
+                                                .format(Date())
+                                    }.txt").putFile(file.toUri())
                 } else {
                     val intent = Intent(this, Web::class.java)
-                    intent.putExtra("web",1)
+                    intent.putExtra("web", 1)
                     startActivity(intent)
                 }
             }
@@ -111,7 +120,7 @@ class Help : AppCompatActivity() {
             val bufferedReader = BufferedReader(InputStreamReader(process?.inputStream))
             var line: String?
             while (bufferedReader.readLine().also { line = it } != null) {
-                strLogcatInfo.append(line.toString()+"\n")
+                strLogcatInfo.append(line.toString() + "\n")
             }
             bufferedReader.close()
             Runtime.getRuntime().exec(clearLog.toArray(arrayOfNulls(clearLog.size)))

@@ -37,9 +37,14 @@ class LastNews : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_last_news)
+        val title = findViewById<TextView>(R.id.textView39)
+        val subtitle = findViewById<TextView>(R.id.textView45)
+        title.text = getString(R.string.l)
+        subtitle.text = "獲取最新報章，即知今日發生何事"
         val news = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("news")
         val listener = news.addChildEventListener(childEventListener)
         progressDialog = ProgressDialog.show(this, "下載並載入圖片", "Loading...")
+        val recyclerview = findViewById<RecyclerView>(R.id.reclist)
         lastChildRunnable = Runnable {
                 news.removeEventListener(listener)
                 Log.d("data", "thread")
@@ -54,25 +59,26 @@ class LastNews : AppCompatActivity() {
                             }.start()
                         }
                     }
+            runOnUiThread {
+                recyclerview.layoutManager = LinearLayoutManager(this)
+                recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray, AccountTool(this).isLogin())
+                recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+            }
+            progressDialog?.dismiss()
                 Thread{
                     for (i in lastNewsArray.indices){
                         do {
                             if (!lastNewsArray[i].loading) break
                         } while (lastNewsArray[i].loading)
+                        runOnUiThread {
+                            recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray, AccountTool(this).isLogin())
+                        }
                     }
                 runOnUiThread {
                     if (lastNewsArray.isEmpty()) {
                         val no = findViewById<TextView>(R.id.no)
                         no.visibility = View.VISIBLE
                     }
-                    val recyclerview = findViewById<RecyclerView>(R.id.reclist)
-                    recyclerview.layoutManager = LinearLayoutManager(this)
-                    // 設置格線
-                    recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-                    // 將資料交給adapter
-                    // 設置adapter給recycler_view
-                    recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray, AccountTool(this).isLogin())
-                    progressDialog!!.dismiss()
                 }
             }.start()
             }
@@ -98,7 +104,7 @@ class LastNews : AppCompatActivity() {
          */
         val intent = Intent(this, NewsInfo::class.java)
         intent.putExtra("newsclass", 0)
-        getLastNewsObj = lastNewsArray[position]
+        getLastNewsObj = (recycler_view.adapter as NewsRecyclerViewAdapter).newsObjs[position]
         startActivity(intent)
     }
     private val childEventListener = object : ChildEventListener {

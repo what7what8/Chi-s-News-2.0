@@ -2,12 +2,12 @@ package com.chinews.xdapp
 
 import android.app.ProgressDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,8 +16,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.newSingleThreadContext
 import java.util.*
+
 
 var getVipNewsObj: NewsObj? = null
 class VipNews : AppCompatActivity() {
@@ -34,12 +34,17 @@ class VipNews : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_last_news)
+        val title = findViewById<TextView>(R.id.textView39)
+        val subtitle = findViewById<TextView>(R.id.textView45)
+        title.text = getString(R.string.bq)
+        subtitle.text = "讓會員搶先看到報章"
         val news = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("news")
         val listener = news.addChildEventListener(childEventListener)
-        progressDialog = ProgressDialog.show(this,"下載並載入圖片","Loading...")
+        progressDialog = ProgressDialog.show(this, "下載並載入圖片", "Loading...")
         lastChildRunnable = Runnable {
             Log.d("data", "thread")
             news.removeEventListener(listener)
+            val recyclerview = findViewById<RecyclerView>(R.id.reclist)
             Thread{
                 newsObjArray.forEach {
                     if (Date(it.date).after(Date())){
@@ -47,24 +52,25 @@ class VipNews : AppCompatActivity() {
                         Thread{ it.startToGetBitmaps() }.start()
                     }
                 }
+                runOnUiThread {
+                    recyclerview.layoutManager = LinearLayoutManager(this)
+                    recyclerview.adapter = NewsRecyclerViewAdapter(vipNewsArray, AccountTool(this).isLogin())
+                    recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+                }
+                progressDialog!!.dismiss()
                 vipNewsArray.forEach{
                     do {
                         if (!it.loading) break
                     } while (it.loading)
+                    runOnUiThread {
+                        recyclerview.adapter = NewsRecyclerViewAdapter(vipNewsArray, AccountTool(this).isLogin())
+                    }
                 }
                 runOnUiThread {
                     if (vipNewsArray.isEmpty()) {
                         val no = findViewById<TextView>(R.id.no)
                         no.visibility = View.VISIBLE
                     }
-                    val recyclerview = findViewById<RecyclerView>(R.id.reclist)
-                    recyclerview.layoutManager = LinearLayoutManager(this)
-                    // 設置格線
-                    recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-                    // 將資料交給adapter
-                    // 設置adapter給recycler_view
-                    recyclerview.adapter = NewsRecyclerViewAdapter(vipNewsArray,true)
-                    progressDialog!!.dismiss()
                 }
             }.start()
         }
@@ -89,8 +95,8 @@ class VipNews : AppCompatActivity() {
         }
          */
         val intent = Intent(this, NewsInfo::class.java)
-        intent.putExtra("newsclass",0)
-        getVipNewsObj = vipNewsArray[position]
+        intent.putExtra("newsclass", 2)
+        getVipNewsObj = (recycler_view.adapter as NewsRecyclerViewAdapter).newsObjs[position]
         startActivity(intent)
     }
     private val childEventListener = object : ChildEventListener {
@@ -101,12 +107,11 @@ class VipNews : AppCompatActivity() {
                 Log.d("data", "newsaddget")
                 val newsHashMap = snapshot.value as HashMap<*, *>
                 newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(),
-                        if (snapshot.key!!.lastIndexOf("|") == -1){
+                        if (snapshot.key!!.lastIndexOf("|") == -1) {
                             snapshot.key!!.toLong()
-                        }else {
+                        } else {
                             snapshot.key!!.substring(0 until snapshot.key!!.lastIndexOf("|")).toLong()
-                        }
-                        , newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
+                        }, newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
                 Log.d("data", newsHashMap["cy"]!!.toString())
             } catch (ignored: NullPointerException){}
         }

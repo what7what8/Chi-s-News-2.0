@@ -69,8 +69,12 @@
     <string name="bl">Death</string>
     <string name="濕度">Humidity:</string>
     <string name="一小時平均降雨量">One hour average rainfall:</string>
-    <string name="username">Unknown</string>
+    <string name="username">Anonymous</string>
     <string name="ca">Ask customer service for questions or…chat🤔</string>
     <string name="bm">It seems that the message is loading or there is no message yet…</string>
     <string name="bn">Chart</string>
+    <string name="bo">資訊\n報商:%s\n版號:%s\n日期:%s</string>
+    <string name="bp">資訊\n報商:%s\n日期:%s</string>
+    <string name="bq">會員搶先看</string>
+    <string name="dow">Download completed</string>
 </resources>
