@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @androidx.annotation.RequiresPermission("android.permission.INTERNET")
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

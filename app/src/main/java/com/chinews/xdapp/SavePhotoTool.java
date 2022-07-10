@@ -1,11 +1,9 @@
 package com.chinews.xdapp;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -21,8 +19,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class SavePhotoTool {
     /**
@@ -79,8 +75,8 @@ public class SavePhotoTool {
         try {
             File fd = new File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath(), folder);
             fd.mkdir();
-            File f = new File(fd.getPath(), name+".png");
-            try (FileOutputStream fo = new FileOutputStream(f)){
+            File f = new File(fd.getPath(), name + ".png");
+            try (FileOutputStream fo = new FileOutputStream(f)) {
                 fo.write(bytes.toByteArray());
             }
             f.setLastModified(time);
@@ -92,15 +88,16 @@ public class SavePhotoTool {
             }
             // 最后通知图库更新
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + f.getAbsolutePath())));
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    public void saveImageToGallery(Context context, Bitmap image, long time, String folder, String name){
+
+    public void saveImageToGallery(Context context, Bitmap image, long time, String folder, String name) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            saveImageToGalleryOnVersionR(context,image,time,folder,name);
+            saveImageToGalleryOnVersionR(context, image, time, folder, name);
         } else {
-            saveImageToGalleryOnVersionQ(context,image,time,folder,name);
+            saveImageToGalleryOnVersionQ(context, image, time, folder, name);
         }
     }
 }

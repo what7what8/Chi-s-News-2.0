@@ -4,16 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import org.json.JSONException
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 
 class Warnsum : AppCompatActivity() {
     private var desc: String? = null
@@ -93,148 +86,148 @@ class Warnsum : AppCompatActivity() {
 
     private fun catchWarnsum() {
         catchDataw = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=tc"
-                Volley.newRequestQueue(this).add(
-                        StringRequest(Request.Method.GET,catchDataw,
-                                { json ->
-                                    val jsonObject = JSONObject(json.toString())
-                                    @Suppress("SENSELESS_COMPARISON")
-                                    if (jsonObject != null) {
-                                        if (jsonObject.toString().contains("WFIRE")) {
-                                            wf = jsonObject.getJSONObject("WFIRE")
-                                            wfc = wf?.getString("code")
-                                            wfac = wf?.getString("actionCode")
-                                        } else {
-                                            wfc = "null"
-                                            wfac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WHOT")) {
-                                            wh = jsonObject.getJSONObject("WHOT")
-                                            whc = wh?.getString("code")
-                                            whac = wh?.getString("actionCode")
-                                        } else {
-                                            whc = "null"
-                                            whac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WCOLD")) {
-                                            wc = jsonObject.getJSONObject("WCOLD")
-                                            wcc = wc?.getString("code")
-                                            wcac = wc?.getString("actionCode")
-                                        } else {
-                                            wcc = "null"
-                                            wcac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WMSGNL")) {
-                                            wm = jsonObject.getJSONObject("WMSGNL")
-                                            wmc = wm?.getString("code")
-                                            wmac = wm?.getString("actionCode")
-                                        } else {
-                                            wmc = "null"
-                                            wmac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WRAIN")) {
-                                            wr = jsonObject.getJSONObject("WRAIN")
-                                            wrc = wr?.getString("code")
-                                            wrac = wr?.getString("actionCode")
-                                        } else {
-                                            wrc = "null"
-                                            wrac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WFNTSA")) {
-                                            wfn = jsonObject.getJSONObject("WFNTSA")
-                                            wfnc = wfn?.getString("code")
-                                            wfnac = wfn?.getString("actionCode")
-                                        } else {
-                                            wfnc = "null"
-                                            wfnac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WL")) {
-                                            wl = jsonObject.getJSONObject("WL")
-                                            wlc = wl?.getString("code")
-                                            wlac = wl?.getString("actionCode")
-                                        } else {
-                                            wlc = "null"
-                                            wlac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WTCSGNL")) {
-                                            wt = jsonObject.getJSONObject("WTCSGNL")
-                                            wtc = wt?.getString("code")
-                                            wtac = wt?.getString("actionCode")
-                                        } else {
-                                            wtc = "null"
-                                            wtac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WTMW")) {
-                                            wtm = jsonObject.getJSONObject("WTMW")
-                                            wtmc = wtm?.getString("code")
-                                            wtmac = wtm?.getString("actionCode")
-                                        } else {
-                                            wtmc = "null"
-                                            wtmac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WTS")) {
-                                            wts = jsonObject.getJSONObject("WTS")
-                                            wtsc = wts?.getString("code")
-                                            wtsac = wts?.getString("actionCode")
-                                        } else {
-                                            wtsc = "null"
-                                            wtsac = "null"
-                                        }
-                                        if (jsonObject.toString().contains("WFROST")) {
-                                            wfr = jsonObject.getJSONObject("WFROST")
-                                            wfrc = wfr?.getString("code")
-                                            wfrac = wfr?.getString("actionCode")
-                                        } else {
-                                            wfrc = "null"
-                                            wfrac = "null"
-                                        }
-                                        val bundle1 = Bundle()
-                                        bundle1.putString("gesi", gesi)
-                                        bundle1.putString("tcif", tcif)
-                                        bundle1.putString("fdwa", fdwa)
-                                        bundle1.putString("fope", fope)
-                                        bundle1.putString("fode", fode)
-                                        bundle1.putString("oulo", oulo)
-                                        bundle1.putString("fupt", fupt)
-                                        bundle1.putString("wfc", wfc)//
-                                        bundle1.putString("wfac", wfac)
-                                        bundle1.putString("wfrc", wfrc)
-                                        bundle1.putString("wfrac", wfrac)
-                                        bundle1.putString("whc", whc)
-                                        bundle1.putString("whac", whac)
-                                        bundle1.putString("wcc", wcc)
-                                        bundle1.putString("wcac", wcac)
-                                        bundle1.putString("wmc", wmc)
-                                        bundle1.putString("wmac", wmac)
-                                        bundle1.putString("wrc", wrc)
-                                        bundle1.putString("wrac", wrac)
-                                        bundle1.putString("wlc", wlc)
-                                        bundle1.putString("wlac", wlac)
-                                        bundle1.putString("wtc", wtc)
-                                        bundle1.putString("wtac", wtac)
-                                        bundle1.putString("wtmc", wtmc)
-                                        bundle1.putString("wtmac", wtmac)
-                                        bundle1.putString("wtsc", wtsc)
-                                        bundle1.putString("wtsac", wtsac)
-                                        bundle1.putString("wfnc", wfnc)
-                                        bundle1.putString("wfnac", wfnac)
-                                        bundle1.putInt("ramn", ramn)
-                                        bundle1.putInt("ramx", ramx)
-                                        bundle1.putString("rami", rami)
-                                        bundle1.putInt("icon", icon)
-                                        bundle1.putInt("temp", temp)
-                                        bundle1.putString("mnft", mnft)
-                                        bundle1.putString("humd", humd)
-                                        bundle1.putString("updt", updt)
-                                        bundle1.putString("desc", desc)
-                                        val intent3 = Intent()
-                                        intent3.setClass(this, Weather::class.java)
-                                        intent3.putExtras(bundle1)
-                                        startActivity(intent3)
-                                    }
-                                },
-                                {
-                                    it.printStackTrace()
-                                })
-                )
+        Volley.newRequestQueue(this).add(
+                StringRequest(Request.Method.GET, catchDataw,
+                        { json ->
+                            val jsonObject = JSONObject(json.toString())
+                            @Suppress("SENSELESS_COMPARISON")
+                            if (jsonObject != null) {
+                                if (jsonObject.toString().contains("WFIRE")) {
+                                    wf = jsonObject.getJSONObject("WFIRE")
+                                    wfc = wf?.getString("code")
+                                    wfac = wf?.getString("actionCode")
+                                } else {
+                                    wfc = "null"
+                                    wfac = "null"
+                                }
+                                if (jsonObject.toString().contains("WHOT")) {
+                                    wh = jsonObject.getJSONObject("WHOT")
+                                    whc = wh?.getString("code")
+                                    whac = wh?.getString("actionCode")
+                                } else {
+                                    whc = "null"
+                                    whac = "null"
+                                }
+                                if (jsonObject.toString().contains("WCOLD")) {
+                                    wc = jsonObject.getJSONObject("WCOLD")
+                                    wcc = wc?.getString("code")
+                                    wcac = wc?.getString("actionCode")
+                                } else {
+                                    wcc = "null"
+                                    wcac = "null"
+                                }
+                                if (jsonObject.toString().contains("WMSGNL")) {
+                                    wm = jsonObject.getJSONObject("WMSGNL")
+                                    wmc = wm?.getString("code")
+                                    wmac = wm?.getString("actionCode")
+                                } else {
+                                    wmc = "null"
+                                    wmac = "null"
+                                }
+                                if (jsonObject.toString().contains("WRAIN")) {
+                                    wr = jsonObject.getJSONObject("WRAIN")
+                                    wrc = wr?.getString("code")
+                                    wrac = wr?.getString("actionCode")
+                                } else {
+                                    wrc = "null"
+                                    wrac = "null"
+                                }
+                                if (jsonObject.toString().contains("WFNTSA")) {
+                                    wfn = jsonObject.getJSONObject("WFNTSA")
+                                    wfnc = wfn?.getString("code")
+                                    wfnac = wfn?.getString("actionCode")
+                                } else {
+                                    wfnc = "null"
+                                    wfnac = "null"
+                                }
+                                if (jsonObject.toString().contains("WL")) {
+                                    wl = jsonObject.getJSONObject("WL")
+                                    wlc = wl?.getString("code")
+                                    wlac = wl?.getString("actionCode")
+                                } else {
+                                    wlc = "null"
+                                    wlac = "null"
+                                }
+                                if (jsonObject.toString().contains("WTCSGNL")) {
+                                    wt = jsonObject.getJSONObject("WTCSGNL")
+                                    wtc = wt?.getString("code")
+                                    wtac = wt?.getString("actionCode")
+                                } else {
+                                    wtc = "null"
+                                    wtac = "null"
+                                }
+                                if (jsonObject.toString().contains("WTMW")) {
+                                    wtm = jsonObject.getJSONObject("WTMW")
+                                    wtmc = wtm?.getString("code")
+                                    wtmac = wtm?.getString("actionCode")
+                                } else {
+                                    wtmc = "null"
+                                    wtmac = "null"
+                                }
+                                if (jsonObject.toString().contains("WTS")) {
+                                    wts = jsonObject.getJSONObject("WTS")
+                                    wtsc = wts?.getString("code")
+                                    wtsac = wts?.getString("actionCode")
+                                } else {
+                                    wtsc = "null"
+                                    wtsac = "null"
+                                }
+                                if (jsonObject.toString().contains("WFROST")) {
+                                    wfr = jsonObject.getJSONObject("WFROST")
+                                    wfrc = wfr?.getString("code")
+                                    wfrac = wfr?.getString("actionCode")
+                                } else {
+                                    wfrc = "null"
+                                    wfrac = "null"
+                                }
+                                val bundle1 = Bundle()
+                                bundle1.putString("gesi", gesi)
+                                bundle1.putString("tcif", tcif)
+                                bundle1.putString("fdwa", fdwa)
+                                bundle1.putString("fope", fope)
+                                bundle1.putString("fode", fode)
+                                bundle1.putString("oulo", oulo)
+                                bundle1.putString("fupt", fupt)
+                                bundle1.putString("wfc", wfc)//
+                                bundle1.putString("wfac", wfac)
+                                bundle1.putString("wfrc", wfrc)
+                                bundle1.putString("wfrac", wfrac)
+                                bundle1.putString("whc", whc)
+                                bundle1.putString("whac", whac)
+                                bundle1.putString("wcc", wcc)
+                                bundle1.putString("wcac", wcac)
+                                bundle1.putString("wmc", wmc)
+                                bundle1.putString("wmac", wmac)
+                                bundle1.putString("wrc", wrc)
+                                bundle1.putString("wrac", wrac)
+                                bundle1.putString("wlc", wlc)
+                                bundle1.putString("wlac", wlac)
+                                bundle1.putString("wtc", wtc)
+                                bundle1.putString("wtac", wtac)
+                                bundle1.putString("wtmc", wtmc)
+                                bundle1.putString("wtmac", wtmac)
+                                bundle1.putString("wtsc", wtsc)
+                                bundle1.putString("wtsac", wtsac)
+                                bundle1.putString("wfnc", wfnc)
+                                bundle1.putString("wfnac", wfnac)
+                                bundle1.putInt("ramn", ramn)
+                                bundle1.putInt("ramx", ramx)
+                                bundle1.putString("rami", rami)
+                                bundle1.putInt("icon", icon)
+                                bundle1.putInt("temp", temp)
+                                bundle1.putString("mnft", mnft)
+                                bundle1.putString("humd", humd)
+                                bundle1.putString("updt", updt)
+                                bundle1.putString("desc", desc)
+                                val intent3 = Intent()
+                                intent3.setClass(this, Weather::class.java)
+                                intent3.putExtras(bundle1)
+                                startActivity(intent3)
+                            }
+                        },
+                        {
+                            it.printStackTrace()
+                        })
+        )
     }
 }

@@ -10,15 +10,15 @@ import android.graphics.Color
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.google.firebase.database.*
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class Notification constructor(val context: Context) {
     var foreground = false
@@ -29,14 +29,15 @@ class Notification constructor(val context: Context) {
         val ref = database.child("message")
         val newsRef = database.child("news")
         database.addChildEventListener(notification)
-        if (foreground){
+        if (foreground) {
             ref.addChildEventListener(childEventListener)
         } else {
             ref.removeEventListener(childEventListener)
         }
         newsRef.addChildEventListener(newsChildEventListener)
     }
-    fun stopNotification(){
+
+    fun stopNotification() {
         val database = Firebase.database("https://chi-s-news-default-rtdb.europe-west1.firebasedatabase.app/").reference
         val ref = database.child("message")
         val newsRef = database.child("news")
@@ -45,7 +46,7 @@ class Notification constructor(val context: Context) {
         newsRef.removeEventListener(newsChildEventListener)
     }
 
-    private fun sendNotification(title: String, message: String, channel: String, url: String?,category: Int) {
+    private fun sendNotification(title: String, message: String, channel: String, url: String?, category: Int) {
         val resultIntent: Intent = when (category) {
             1 -> Intent(context, Help::class.java)
             2 -> if (channel == "vipmsg") Intent(context, CheckJson::class.java).putExtra("json", 2)
@@ -129,7 +130,7 @@ class Notification constructor(val context: Context) {
                         hashMap[0].toString() + " "
                     }
                 }
-                if (hashMap.size <= 3 && foreground){
+                if (hashMap.size <= 3 && foreground) {
                     Log.d("data", "$foreground")
                     sendNotification("你收到一條訊息", "${username}說: ${hashMap[2]}", "chat", null, 1)
                 }
@@ -160,7 +161,7 @@ class Notification constructor(val context: Context) {
             val title: String
             val url: String
             val can: Boolean
-            if (snapshot.key == "notification"){
+            if (snapshot.key == "notification") {
                 Log.d("data", "onChildChanged: good")
                 val hashMap = snapshot.value as ArrayList<*>
                 val category = AccountTool(context).getCategory()

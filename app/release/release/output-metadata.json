@@ -10,8 +10,8 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 33,
-      "versionName": "2.2 Kowloon Tong",
+      "versionCode": 345,
+      "versionName": "2.2",
       "outputFile": "app-release.apk"
     }
   ]

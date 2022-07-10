@@ -64,6 +64,7 @@ public class BuyVip extends AppCompatActivity {
         }
     }
 
+    @androidx.annotation.RequiresPermission("android.permission.INTERNET")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

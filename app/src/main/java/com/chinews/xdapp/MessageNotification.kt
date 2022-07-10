@@ -33,6 +33,7 @@ class MessageNotification : Service() {
         super.onDestroy()
         notificationc.stopNotification()
     }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         FirebaseApp.initializeApp(this)
         time = System.currentTimeMillis()
@@ -60,7 +61,6 @@ class MessageNotification : Service() {
         startForeground(1, mBuilder.build())
         return super.onStartCommand(intent, flags, startId)
     }
-
 
 
     private fun sendNotification(title: String, message: String, channel: String, url: String?, category: Int) {
@@ -118,14 +118,15 @@ class MessageNotification : Service() {
         notificationManager.notify(1, mBuilder.build())
         if (category == 0) startForeground(1, mBuilder.build())
     }
+
     private val newsChildEventListener = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
             if ((System.currentTimeMillis() - time) > 10000) {
-                val hashMap = snapshot.value as HashMap<*,*>
+                val hashMap = snapshot.value as HashMap<*, *>
                 val cy = hashMap["cy"].toString()
                 val title = "新的${cy}出爐了！！😆"
                 val message = "快入去App查看新的${cy}吧！！😁😏"
-                sendNotification(title,message,"news",null,3)
+                sendNotification(title, message, "news", null, 3)
             } else {
                 time = System.currentTimeMillis()
             }
@@ -151,17 +152,17 @@ class MessageNotification : Service() {
         @SuppressLint("SimpleDateFormat")
         override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
             if ((System.currentTimeMillis() - time) > 10000) {
-                val hashMap = dataSnapshot.value as HashMap<*,*>
-                    username = when (hashMap[0].toString()) {
-                        "null" -> {
-                            getString(R.string.username) + " "
-                        }
-                        else -> {
-                            hashMap[0].toString() + " "
-                        }
+                val hashMap = dataSnapshot.value as HashMap<*, *>
+                username = when (hashMap[0].toString()) {
+                    "null" -> {
+                        getString(R.string.username) + " "
                     }
-                    sendNotification("你收到一條訊息", "${username}說: ${hashMap[2].toString()}", "chat", null, 1)
-                    time = System.currentTimeMillis()
+                    else -> {
+                        hashMap[0].toString() + " "
+                    }
+                }
+                sendNotification("你收到一條訊息", "${username}說: ${hashMap[2].toString()}", "chat", null, 1)
+                time = System.currentTimeMillis()
             } else {
                 time = System.currentTimeMillis()
             }
@@ -191,7 +192,7 @@ class MessageNotification : Service() {
             val url: String
             val can: Boolean
             Log.d("data", "onChildChanged: good")
-            val hashMap = snapshot.value as HashMap<*,*>
+            val hashMap = snapshot.value as HashMap<*, *>
             val category = AccountTool(this@MessageNotification).getCategory()
             can = if (category == "cusser") true
             else category.let { hashMap[4].toString().contains(it) }

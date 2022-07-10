@@ -18,30 +18,33 @@ data class NewsObj(
         var cy: String,
         var date: Long,
         var id: String,
-        var newscode: String){
+        var newscode: String) {
     constructor(newsObj: NewsObj) : this(newsObj.cy, newsObj.date, newsObj.id, newsObj.newscode)
 
     val bitmaps: ArrayList<Bitmap> = arrayListOf()
     var loading: Boolean = true
         private set
+
     fun getDate(): String {
         return SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(date)
     }
-    fun getSearchKeyWord(): String{
+
+    fun getSearchKeyWord(): String {
         //Log.d("data", "getSearchKeyWord: $returnstr")
-        return cy.replace("の","之")+ newscode +SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(date)
+        return cy.replace("の", "之") + newscode + SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(date)
     }
+
     fun startToGetBitmaps() {
         val gsReference = Firebase.storage("gs://chi-s-news.appspot.com").reference.child(id)
         //android.R.drawable.ic_menu_report_image
         gsReference.listAll().addOnSuccessListener {
             for (i in 0 until it.items.size) {
                 val localflie = File(App.getContext().cacheDir, "${it.items[i].name}_${id}.webp")
-                if (localflie.exists()){
+                if (localflie.exists()) {
                     bitmaps.add(BitmapFactory.decodeFile(localflie.path))
                     loading = false
                     Log.d("data", "startToGetBitmaps: usefile")
-                }else{
+                } else {
                     it.items[i].getFile(localflie).addOnSuccessListener {
                         bitmaps.add(BitmapFactory.decodeFile(localflie.path, getBitmapOption(2)))
                         Log.d("data", "just read")
@@ -68,6 +71,7 @@ data class NewsObj(
         options.inSampleSize = inSampleSize
         return options
     }
+
     private fun drawableToBitmap(drawable: Drawable): Bitmap {
         if (drawable is BitmapDrawable) {
             if (drawable.bitmap != null) {

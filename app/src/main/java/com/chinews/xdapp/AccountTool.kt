@@ -8,7 +8,8 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 class AccountTool(context: Context) {
-    var jsonObject1 = JSONObject()
+    private var jsonObject1 = JSONObject()
+
     init {
         try {
             val fileInputStream = context.openFileInput("cache_text")
@@ -23,14 +24,17 @@ class AccountTool(context: Context) {
             bufferedReader.close()
             fileInputStream.close()
             jsonObject1 = JSONObject(json.toString())
-        }catch (e: IOException){}
-        catch (e: JSONException){jsonObject1=JSONObject()}
+        } catch (e: IOException) {
+        } catch (e: JSONException) {
+            jsonObject1 = JSONObject()
+        }
     }
+
     fun isLogin(): Boolean {
         var status = false
-        try{
+        try {
             //email = jsonObject.getString("email");
-            if (jsonObject1.getString("status") == "login"){
+            if (jsonObject1.getString("status") == "login") {
                 status = true
             }
         } catch (e: Exception) {
@@ -39,16 +43,18 @@ class AccountTool(context: Context) {
             return status
         }
     }
+
     fun getCategory(): String {
         var category = "no login"
-            try {
-                category = jsonObject1.getString("category")
+        try {
+            category = jsonObject1.getString("category")
         } catch (e: Exception) {
 
         } finally {
             return category
         }
     }
+
     fun getUserName(): String? {
         var username: String? = null
         try {

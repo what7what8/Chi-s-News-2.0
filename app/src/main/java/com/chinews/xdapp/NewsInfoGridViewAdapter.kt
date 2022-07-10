@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import java.util.*
 
@@ -24,7 +23,7 @@ class NewsInfoGridViewAdapter(private val context: Context, newsObj: NewsObj, va
 
     override fun getCount(): Int {
         //取得 GridView 列表 Item 的數量
-        return if (mItemList.size != 0){
+        return if (mItemList.size != 0) {
             mItemList.size
         } else 1
     }
@@ -32,7 +31,7 @@ class NewsInfoGridViewAdapter(private val context: Context, newsObj: NewsObj, va
     override fun getItem(position: Int): Any {
         //取得 GridView列表於 position 位置上的 Item
         val error = drawableToBitmap(ContextCompat.getDrawable(App.getContext(), android.R.drawable.ic_menu_report_image)!!)
-        if (mItemList.isNullOrEmpty()){
+        if (mItemList.isNullOrEmpty()) {
             mItemList.add(error)
         } else if (mItemList.contains(error)) mItemList.remove(error)
         return mItemList
@@ -46,13 +45,12 @@ class NewsInfoGridViewAdapter(private val context: Context, newsObj: NewsObj, va
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val v: View = mLayoutInflater.inflate(R.layout.newsinfoopt, parent, false)
-        if (mItemList.isNullOrEmpty()){
+        if (mItemList.isNullOrEmpty()) {
             mItemList.add(drawableToBitmap(ContextCompat.getDrawable(App.getContext(), android.R.drawable.ic_menu_report_image)!!))
         }
         val imgView = v.findViewById(R.id.imageView3) as ImageView
-        val pos = position
         imgView.setImageBitmap(mItemList[position])
-        if (!color){
+        if (!color) {
             val cm = ColorMatrix()
             cm.setSaturation(0f) // 设置饱和度
             val grayColorFilter = ColorMatrixColorFilter(cm)
@@ -62,16 +60,17 @@ class NewsInfoGridViewAdapter(private val context: Context, newsObj: NewsObj, va
             //大图所依附的dialog
             dialog = Dialog(context)
             dialog!!.show()
-            val mImageView = getImageView(mItemList[pos])
+            val mImageView = getImageView(mItemList[position])
             dialog!!.setContentView(mImageView)
 
             //大图的点击事件（点击让他消失）
-            mImageView.setOnClickListener{
+            mImageView.setOnClickListener {
                 dialog!!.dismiss()
             }
         }
         return v
     }
+
     //动态的ImageView
     private fun getImageView(bm: Bitmap): ImageView {
         val iv = ImageView(context)
@@ -81,7 +80,7 @@ class NewsInfoGridViewAdapter(private val context: Context, newsObj: NewsObj, va
         iv.setPadding(20, 20, 20, 20)
         //imageView设置图片
         iv.setImageBitmap(bm)
-        if (!color){
+        if (!color) {
             val cm = ColorMatrix()
             cm.setSaturation(0f) // 设置饱和度
             val grayColorFilter = ColorMatrixColorFilter(cm)
@@ -89,6 +88,7 @@ class NewsInfoGridViewAdapter(private val context: Context, newsObj: NewsObj, va
         }
         return iv
     }
+
     @Suppress("SameParameterValue")
     private fun getBitmapOption(inSampleSize: Int): BitmapFactory.Options {
         val options = BitmapFactory.Options()
@@ -96,6 +96,7 @@ class NewsInfoGridViewAdapter(private val context: Context, newsObj: NewsObj, va
         options.inSampleSize = inSampleSize
         return options
     }
+
     private fun drawableToBitmap(drawable: Drawable): Bitmap {
         if (drawable is BitmapDrawable) {
             if (drawable.bitmap != null) {

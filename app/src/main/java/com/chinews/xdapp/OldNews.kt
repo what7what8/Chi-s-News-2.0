@@ -20,14 +20,16 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
-var getOldNewsObj :NewsObj? = null
+var getOldNewsObj: NewsObj? = null
+
 class OldNews : AppCompatActivity() {
     val newsObjArray = arrayListOf<NewsObj>()
     private val oldNewsObjArray = arrayListOf<NewsObj>()
     private val lastChildHandler: Handler = Handler()
-    private lateinit var lastChildRunnable :Runnable
+    private lateinit var lastChildRunnable: Runnable
     private var isLogin: Boolean = false
     var progressDialog: ProgressDialog? = null
+
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,7 @@ class OldNews : AppCompatActivity() {
                         it.startToGetBitmaps()
                     }
                 }
+                oldNewsObjArray.reverse()
                 progressDialog!!.max--
                 Log.d("data", "thread")
                 Log.d("data", "${oldNewsObjArray.size}")
@@ -68,13 +71,13 @@ class OldNews : AppCompatActivity() {
                     recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
                     // 將資料交給adapter
                     // 設置adapter給recycler_view
-                    recyclerview.adapter = NewsRecyclerViewAdapter(oldNewsObjArray,isLogin)
+                    recyclerview.adapter = NewsRecyclerViewAdapter(oldNewsObjArray, isLogin)
                     findViewById<SearchView>(R.id.searchView).setOnQueryTextListener(onQueryTextListener)
                     if (newsObjArray.isEmpty()) {
                         val no = findViewById<TextView>(R.id.no)
                         no.visibility = View.VISIBLE
                     }
-                    Thread{
+                    Thread {
                         Thread.sleep(500)
                         progressDialog!!.dismiss()
                     }.start()
@@ -82,23 +85,25 @@ class OldNews : AppCompatActivity() {
             }.start()
         }
     }
+
     override fun onDestroy() {
         progressDialog?.dismiss()
         super.onDestroy()
     }
+
     private val onQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return try {
                 val searchNewsObjs = arrayListOf<NewsObj>()
                 val recyclerview = findViewById<RecyclerView>(R.id.reclist)
                 oldNewsObjArray.forEach {
-                    if (query?.let { it1 -> it.getSearchKeyWord().contains(it1) } == true){
+                    if (query?.let { it1 -> it.getSearchKeyWord().contains(it1) } == true) {
                         searchNewsObjs.add(it)
                     }
                 }
-                recyclerview.adapter = NewsRecyclerViewAdapter(searchNewsObjs,isLogin)
+                recyclerview.adapter = NewsRecyclerViewAdapter(searchNewsObjs, isLogin)
                 true
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 false
             }
         }
@@ -108,18 +113,19 @@ class OldNews : AppCompatActivity() {
                 val searchNewsObjs = arrayListOf<NewsObj>()
                 val recyclerview = findViewById<RecyclerView>(R.id.reclist)
                 oldNewsObjArray.forEach {
-                    if (newText?.let { it1 -> it.getSearchKeyWord().contains(it1) } == true){
+                    if (newText?.let { it1 -> it.getSearchKeyWord().contains(it1) } == true) {
                         searchNewsObjs.add(it)
                     }
                 }
-                recyclerview.adapter = NewsRecyclerViewAdapter(searchNewsObjs,isLogin)
+                recyclerview.adapter = NewsRecyclerViewAdapter(searchNewsObjs, isLogin)
                 true
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 false
             }
         }
 
     }
+
     @Suppress("LocalVariableName")
     fun OnClick(v: View) {
         val recycler_view = findViewById<RecyclerView>(R.id.reclist)
@@ -141,27 +147,27 @@ class OldNews : AppCompatActivity() {
          */
         val intent = Intent(this, NewsInfo::class.java)
         getOldNewsObj = (recycler_view.adapter as NewsRecyclerViewAdapter).newsObjs[position]
-        Thread{
+        Thread {
             Thread.sleep(100)
             startActivity(intent)
         }.start()
     }
+
     private val childEventListener = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            try{
+            try {
                 lastChildHandler.removeCallbacks(lastChildRunnable)
                 lastChildHandler.postDelayed(lastChildRunnable, 20)
                 Log.d("data", "newsaddget")
                 val newsHashMap = snapshot.value as HashMap<*, *>
                 newsObjArray.add(NewsObj(newsHashMap["cy"]!!.toString(),
-                        if (snapshot.key!!.lastIndexOf("|") == -1){
+                        if (snapshot.key!!.lastIndexOf("|") == -1) {
                             snapshot.key!!.toLong()
-                        }else {
+                        } else {
                             snapshot.key!!.substring(0 until snapshot.key!!.lastIndexOf("|")).toLong()
-                              }
-                        , newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
+                        }, newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
                 Log.d("data", newsHashMap["cy"]!!.toString())
-            } catch (e: NullPointerException){
+            } catch (e: NullPointerException) {
 
             }
         }

@@ -18,7 +18,7 @@ class NewsInfo : AppCompatActivity() {
         val download = findViewById<ImageView>(R.id.imageView4)
         val downtext = findViewById<TextView>(R.id.textView44)
         var loading = true
-        val newsObj = when (intent.getIntExtra("newsclass", 1)){
+        val newsObj = when (intent.getIntExtra("newsclass", 1)) {
             1 -> {
                 getOldNewsObj!!
             }
@@ -32,7 +32,7 @@ class NewsInfo : AppCompatActivity() {
                 getOldNewsObj!!
             }
         }
-        if (newsObj.newscode != "null"){
+        if (newsObj.newscode != "null") {
             info.text = String.format(resources.getString(R.string.bo), newsObj.cy, newsObj.newscode, newsObj.getDate())
         } else {
             info.text = String.format(resources.getString(R.string.bp), newsObj.cy, newsObj.getDate())
@@ -64,7 +64,7 @@ class NewsInfo : AppCompatActivity() {
         val onClickListener = View.OnClickListener {
             Thread {
                 //while (!loading) {}
-                for (i in newsObj.bitmaps.indices){
+                for (i in newsObj.bitmaps.indices) {
                     SavePhotoTool().saveImageToGallery(
                             this,
                             newsObj.bitmaps[i],
@@ -78,7 +78,7 @@ class NewsInfo : AppCompatActivity() {
                     )
                 }
                 runOnUiThread {
-                    Toast.makeText(this,getString(R.string.dow),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.dow), Toast.LENGTH_SHORT).show()
                 }
             }.start()
         }

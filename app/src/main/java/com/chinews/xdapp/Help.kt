@@ -49,7 +49,7 @@ class Help : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_help)
         for (appProcess in (applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as (ActivityManager)).runningAppProcesses) {
-            if (appProcess.processName == "com.chinews.xdapp:MessageNotification"){
+            if (appProcess.processName == "com.chinews.xdapp:MessageNotification") {
                 android.os.Process.killProcess(appProcess.pid)
             }
         }
@@ -82,7 +82,7 @@ class Help : AppCompatActivity() {
             val listDialog = AlertDialog.Builder(this)
             listDialog.setTitle("更多選項")
             listDialog.setItems(items) { _, which -> // which 下标从0开始
-                if (which == 0){
+                if (which == 0) {
                     val message = listOf(usernamev, "$category", "不支援此訊息，請於更新後查看!", "log")
                     ref.child(System.currentTimeMillis().toString()).setValue(message).addOnFailureListener {
                         Toast.makeText(this, getString(R.string.ac), Toast.LENGTH_SHORT).show()
@@ -106,6 +106,7 @@ class Help : AppCompatActivity() {
             listDialog.show()
         }
     }
+
     private fun getLogcatInfo(): String {
         val strLogcatInfo = StringBuilder()
         var process: Process? = null
@@ -129,6 +130,7 @@ class Help : AppCompatActivity() {
         }
         return strLogcatInfo.toString()
     }
+
     @Suppress("DEPRECATION")
     private val childEventListener = object : ChildEventListener {
         @Suppress("ControlFlowWithEmptyBody")
@@ -174,8 +176,8 @@ class Help : AppCompatActivity() {
             val time = SimpleDateFormat("yyyy-MM-dd HH:mm").format(date.toLong())
             allmessage += time + "\n"
             text.text = allmessage
-            if (hashMap.size > 3){
-                if (hashMap[3] == "log"){
+            if (hashMap.size > 3) {
+                if (hashMap[3] == "log") {
                     text.append("訊息: ")
                     text.append(Html.fromHtml("<i>傳送了程式日誌，開發者可於後台查看!</i>"))
                     text.append("\n\n")

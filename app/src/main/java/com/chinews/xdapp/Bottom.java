@@ -56,6 +56,7 @@ public class Bottom extends Fragment {
         return inflater.inflate(R.layout.fragment_buttom, null);
     }
 
+    @androidx.annotation.RequiresPermission("android.permission.INTERNET")
     @SuppressWarnings("deprecation")
     @Override
     public void onActivityCreated(Bundle bundle) {

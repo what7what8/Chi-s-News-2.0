@@ -226,30 +226,29 @@ ${getString(R.string.濕度)}$humd%
         val url = "https://api.data.gov.hk/v2/filter?q=%7B%22resource%22%3A%22http%3A%2F%2Fwww.chp.gov.hk%2Ffiles%2Fmisc%2Flatest_situation_of_reported_cases_covid_19_chi.csv%22%2C%22section%22%3A1%2C%22format%22%3A%22json%22%7D"
         val url1 = "https://chp-dashboard.geodata.gov.hk/covid-19/data/keynum.json"
         Volley.newRequestQueue(this).add(
-                StringRequest(Request.Method.GET, url,{ json ->
+                StringRequest(Request.Method.GET, url, { json ->
                     Volley.newRequestQueue(this).add(
-                            StringRequest(Request.Method.GET, url1, {
-                                jsoni ->
-                                try{
+                            StringRequest(Request.Method.GET, url1, { jsoni ->
+                                try {
                                     this.json = StringBuilder(json)
-                                Log.d("data", jsoni.toString())
-                                val jsonObject = JSONObject(jsoni.toString())
-                                val chartjson = JSONArray(json.toString())
-                                covidnew = jsonObject.getInt("Confirmed")
-                                covidold = jsonObject.getInt("P_Confirmed")
-                                death = jsonObject.getString("Death")
-                                chartdate = chartjson.getJSONObject(chartjson.length() - 1).getString("更新日期")
-                                date = formatData("dd/MM/yyyy HH:mm", jsonObject.getLong("As_of_date"))
-                                notsick = jsonObject.getInt("Discharged")
-                                Log.d("data", "新增確診:${(covidnew - covidold)}")
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                                    load?.dismiss()
-                            }
-                , Throwable::printStackTrace
-                ))}, Throwable::printStackTrace
-));
+                                    Log.d("data", jsoni.toString())
+                                    val jsonObject = JSONObject(jsoni.toString())
+                                    val chartjson = JSONArray(json.toString())
+                                    covidnew = jsonObject.getInt("Confirmed")
+                                    covidold = jsonObject.getInt("P_Confirmed")
+                                    death = jsonObject.getString("Death")
+                                    chartdate = chartjson.getJSONObject(chartjson.length() - 1).getString("更新日期")
+                                    date = formatData("dd/MM/yyyy HH:mm", jsonObject.getLong("As_of_date"))
+                                    notsick = jsonObject.getInt("Discharged")
+                                    Log.d("data", "新增確診:${(covidnew - covidold)}")
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                                load?.dismiss()
+                            }, Throwable::printStackTrace
+                            ))
+                }, Throwable::printStackTrace
+                ))
     }
 
     private fun warnsumdo(@Nullable code: String?, @Nullable actcode: String?, res: Int, jsoncode: String) {

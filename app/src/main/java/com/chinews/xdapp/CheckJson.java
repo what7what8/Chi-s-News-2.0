@@ -1,6 +1,5 @@
 package com.chinews.xdapp;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -21,14 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 
@@ -120,23 +110,23 @@ public class CheckJson extends AppCompatActivity {
         window.setAttributes(lp);
         Volley.newRequestQueue(this).add(
                 new StringRequest(Request.Method.GET, catchSwt, json -> {
-                try {
-                JSONObject jsonObject = new JSONObject(json);
-                JSONArray jsonArray = jsonObject.getJSONArray("swt");
-                desc = new StringBuilder();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    if (json.contains("desc")) {
-                        desc.append("\n").append(jsonArray.getJSONObject(i).getString("desc"));
-                    } else {
-                        desc.append("");
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        JSONArray jsonArray = jsonObject.getJSONArray("swt");
+                        desc = new StringBuilder();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            if (json.contains("desc")) {
+                                desc.append("\n").append(jsonArray.getJSONObject(i).getString("desc"));
+                            } else {
+                                desc.append("");
+                            }
+                        }
+                        dialogSwt.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }
-                dialogSwt.dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-    }, Throwable::printStackTrace
-        ));
+                }, Throwable::printStackTrace
+                ));
     }
 
     private void catchData() {
@@ -189,38 +179,38 @@ public class CheckJson extends AppCompatActivity {
         window.setAttributes(lp);
         Volley.newRequestQueue(this).add(
                 new StringRequest(Request.Method.GET, catchWeather, json -> {
-                try {
-                    JSONObject jsonObject = new JSONObject(valueOf(json));
+                    try {
+                        JSONObject jsonObject = new JSONObject(valueOf(json));
 
-                    JSONObject r = jsonObject.getJSONObject("rainfall");
-                    JSONObject t = jsonObject.getJSONObject("temperature");
-                    JSONObject h = jsonObject.getJSONObject("humidity");
-                    JSONArray rd = r.getJSONArray("data");
-                    JSONArray td = t.getJSONArray("data");
-                    JSONArray hd = h.getJSONArray("data");
-                    JSONArray ic = jsonObject.getJSONArray("icon");
-                    JSONObject raf = rd.getJSONObject(9);
-                    JSONObject tem = td.getJSONObject(15);
-                    JSONObject hum = hd.getJSONObject(0);
-                    //rainfall
-                    ramx = raf.getInt("max");
-                    if (ramx != 0) {
-                        ramn = raf.getInt("min");
+                        JSONObject r = jsonObject.getJSONObject("rainfall");
+                        JSONObject t = jsonObject.getJSONObject("temperature");
+                        JSONObject h = jsonObject.getJSONObject("humidity");
+                        JSONArray rd = r.getJSONArray("data");
+                        JSONArray td = t.getJSONArray("data");
+                        JSONArray hd = h.getJSONArray("data");
+                        JSONArray ic = jsonObject.getJSONArray("icon");
+                        JSONObject raf = rd.getJSONObject(9);
+                        JSONObject tem = td.getJSONObject(15);
+                        JSONObject hum = hd.getJSONObject(0);
+                        //rainfall
+                        ramx = raf.getInt("max");
+                        if (ramx != 0) {
+                            ramn = raf.getInt("min");
+                        }
+                        rami = raf.getString("main");
+                        //icon
+                        icon = ic.getInt(0);
+                        //temperature
+                        temp = tem.getInt("value");
+                        mnft = jsonObject.getString("mintempFrom00To09");
+                        //humidity
+                        humd = valueOf(hum.getInt("value"));
+                        //updateTime
+                        updt = jsonObject.getString("updateTime");
+                        dialogweather.dismiss();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    rami = raf.getString("main");
-                    //icon
-                    icon = ic.getInt(0);
-                    //temperature
-                    temp = tem.getInt("value");
-                    mnft = jsonObject.getString("mintempFrom00To09");
-                    //humidity
-                    humd = valueOf(hum.getInt("value"));
-                    //updateTime
-                    updt = jsonObject.getString("updateTime");
-                    dialogweather.dismiss();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 }, Throwable::printStackTrace
                 ));
     }
@@ -246,7 +236,7 @@ public class CheckJson extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }, Throwable::printStackTrace
-        ));
+                ));
     }
 
     private void catchWeatherflw() {
@@ -260,19 +250,19 @@ public class CheckJson extends AppCompatActivity {
         window.setAttributes(lp);
         Volley.newRequestQueue(this).add(
                 new StringRequest(Request.Method.GET, catchWeatherflw, json -> {
-                try {
-                    JSONObject jsonObject = new JSONObject(valueOf(json));
-                    gesi = jsonObject.getString("generalSituation");
-                    tcif = jsonObject.getString("tcInfo");
-                    fdwa = jsonObject.getString("fireDangerWarning");
-                    fope = jsonObject.getString("forecastPeriod");
-                    fode = jsonObject.getString("forecastDesc");
-                    oulo = jsonObject.getString("outlook");
-                    fupt = jsonObject.getString("updateTime");
-                    dialogflw.dismiss();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        JSONObject jsonObject = new JSONObject(valueOf(json));
+                        gesi = jsonObject.getString("generalSituation");
+                        tcif = jsonObject.getString("tcInfo");
+                        fdwa = jsonObject.getString("fireDangerWarning");
+                        fope = jsonObject.getString("forecastPeriod");
+                        fode = jsonObject.getString("forecastDesc");
+                        oulo = jsonObject.getString("outlook");
+                        fupt = jsonObject.getString("updateTime");
+                        dialogflw.dismiss();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }, Throwable::printStackTrace
                 ));
     }

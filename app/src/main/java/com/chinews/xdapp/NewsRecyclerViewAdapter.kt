@@ -30,10 +30,10 @@ class NewsRecyclerViewAdapter internal constructor(var newsObjs: ArrayList<NewsO
                     if (newsObjs[position].newscode != "null") {
                         newsObjs[position].newscode
                     } else "報章"
-            if (!newsObjs[position].bitmaps.isNullOrEmpty()){
+            if (!newsObjs[position].bitmaps.isNullOrEmpty()) {
                 holder.news.setImageBitmap(newsObjs[position].bitmaps[0])
             }
-            if (!color){
+            if (!color) {
                 val cm = ColorMatrix()
                 cm.setSaturation(0f) // 设置饱和度
                 val grayColorFilter = ColorMatrixColorFilter(cm)

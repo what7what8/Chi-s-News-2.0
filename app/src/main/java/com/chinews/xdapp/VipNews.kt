@@ -20,16 +20,18 @@ import java.util.*
 
 
 var getVipNewsObj: NewsObj? = null
+
 class VipNews : AppCompatActivity() {
     private val newsObjArray = arrayListOf<NewsObj>()
     private val vipNewsArray = arrayListOf<NewsObj>()
     private val lastChildHandler: Handler = Handler()
-    private lateinit var lastChildRunnable :Runnable
+    private lateinit var lastChildRunnable: Runnable
     var progressDialog: ProgressDialog? = null
     override fun onDestroy() {
         progressDialog?.dismiss()
         super.onDestroy()
     }
+
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +47,11 @@ class VipNews : AppCompatActivity() {
             Log.d("data", "thread")
             news.removeEventListener(listener)
             val recyclerview = findViewById<RecyclerView>(R.id.reclist)
-            Thread{
+            Thread {
                 newsObjArray.forEach {
-                    if (Date(it.date).after(Date())){
+                    if (Date(it.date).after(Date())) {
                         vipNewsArray.add(it)
-                        Thread{ it.startToGetBitmaps() }.start()
+                        Thread { it.startToGetBitmaps() }.start()
                     }
                 }
                 runOnUiThread {
@@ -58,7 +60,7 @@ class VipNews : AppCompatActivity() {
                     recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
                 }
                 progressDialog!!.dismiss()
-                vipNewsArray.forEach{
+                vipNewsArray.forEach {
                     do {
                         if (!it.loading) break
                     } while (it.loading)
@@ -75,6 +77,7 @@ class VipNews : AppCompatActivity() {
             }.start()
         }
     }
+
     @Suppress("LocalVariableName", "FunctionName")
     fun OnClick(v: View) {
         val recycler_view = findViewById<RecyclerView>(R.id.reclist)
@@ -99,9 +102,10 @@ class VipNews : AppCompatActivity() {
         getVipNewsObj = (recycler_view.adapter as NewsRecyclerViewAdapter).newsObjs[position]
         startActivity(intent)
     }
+
     private val childEventListener = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            try{
+            try {
                 lastChildHandler.removeCallbacks(lastChildRunnable)
                 lastChildHandler.postDelayed(lastChildRunnable, 20)
                 Log.d("data", "newsaddget")
@@ -113,7 +117,8 @@ class VipNews : AppCompatActivity() {
                             snapshot.key!!.substring(0 until snapshot.key!!.lastIndexOf("|")).toLong()
                         }, newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
                 Log.d("data", newsHashMap["cy"]!!.toString())
-            } catch (ignored: NullPointerException){}
+            } catch (ignored: NullPointerException) {
+            }
         }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {

@@ -20,19 +20,21 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-var getLastNewsObj :NewsObj? = null
+var getLastNewsObj: NewsObj? = null
+
 class LastNews : AppCompatActivity() {
     val newsObjArray = arrayListOf<NewsObj>()
     private val cyArray = arrayListOf<String>()
     private val lastNewsArray = arrayListOf<NewsObj>()
     private var reverseNewsObjArray = arrayListOf<NewsObj>()
     private val lastChildHandler: Handler = Handler()
-    private lateinit var lastChildRunnable :Runnable
+    private lateinit var lastChildRunnable: Runnable
     var progressDialog: ProgressDialog? = null
     override fun onDestroy() {
         progressDialog?.dismiss()
         super.onDestroy()
     }
+
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,34 +48,34 @@ class LastNews : AppCompatActivity() {
         progressDialog = ProgressDialog.show(this, "下載並載入圖片", "Loading...")
         val recyclerview = findViewById<RecyclerView>(R.id.reclist)
         lastChildRunnable = Runnable {
-                news.removeEventListener(listener)
-                Log.d("data", "thread")
-                    reverseNewsObjArray = ArrayList(newsObjArray)
-                    reverseNewsObjArray.reverse()
-                    reverseNewsObjArray.forEach {
-                        if (!cyArray.contains(it.cy) && Date(it.date).before(Date())) {
-                            cyArray.add(it.cy)
-                            lastNewsArray.add(it)
-                            Thread{
-                                it.startToGetBitmaps()
-                            }.start()
-                        }
-                    }
+            news.removeEventListener(listener)
+            Log.d("data", "thread")
+            reverseNewsObjArray = ArrayList(newsObjArray)
+            reverseNewsObjArray.reverse()
+            reverseNewsObjArray.forEach {
+                if (!cyArray.contains(it.cy) && Date(it.date).before(Date())) {
+                    cyArray.add(it.cy)
+                    lastNewsArray.add(it)
+                    Thread {
+                        it.startToGetBitmaps()
+                    }.start()
+                }
+            }
             runOnUiThread {
                 recyclerview.layoutManager = LinearLayoutManager(this)
                 recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray, AccountTool(this).isLogin())
                 recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
             }
             progressDialog?.dismiss()
-                Thread{
-                    for (i in lastNewsArray.indices){
-                        do {
-                            if (!lastNewsArray[i].loading) break
-                        } while (lastNewsArray[i].loading)
-                        runOnUiThread {
-                            recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray, AccountTool(this).isLogin())
-                        }
+            Thread {
+                for (i in lastNewsArray.indices) {
+                    do {
+                        if (!lastNewsArray[i].loading) break
+                    } while (lastNewsArray[i].loading)
+                    runOnUiThread {
+                        recyclerview.adapter = NewsRecyclerViewAdapter(lastNewsArray, AccountTool(this).isLogin())
                     }
+                }
                 runOnUiThread {
                     if (lastNewsArray.isEmpty()) {
                         val no = findViewById<TextView>(R.id.no)
@@ -81,8 +83,9 @@ class LastNews : AppCompatActivity() {
                     }
                 }
             }.start()
-            }
         }
+    }
+
     @Suppress("LocalVariableName", "FunctionName")
     fun OnClick(v: View) {
         val recycler_view = findViewById<RecyclerView>(R.id.reclist)
@@ -107,9 +110,10 @@ class LastNews : AppCompatActivity() {
         getLastNewsObj = (recycler_view.adapter as NewsRecyclerViewAdapter).newsObjs[position]
         startActivity(intent)
     }
+
     private val childEventListener = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            try{
+            try {
                 lastChildHandler.removeCallbacks(lastChildRunnable)
                 lastChildHandler.postDelayed(lastChildRunnable, 20)
                 Log.d("data", "newsaddget")
@@ -121,7 +125,8 @@ class LastNews : AppCompatActivity() {
                             snapshot.key!!.substring(0 until snapshot.key!!.lastIndexOf("|")).toLong()
                         }, newsHashMap["id"]!!.toString(), newsHashMap["newscode"]!!.toString()))
                 Log.d("data", newsHashMap["cy"]!!.toString())
-            } catch (ignored: NullPointerException){}
+            } catch (ignored: NullPointerException) {
+            }
         }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
